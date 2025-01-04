@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 83db7ad312b685947a3e9abd36cfe12f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _rewardPool: {fileID: 11400000, guid: 228b8e8d2c73ec545aa0d66e23679361, type: 2}
+  - _spriteAtlas: {fileID: 4343727234628468602, guid: 4311b6ec4ad9d034fa853940a97543e9, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
