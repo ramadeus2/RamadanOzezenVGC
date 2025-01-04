@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.Reward {
 
     [CustomEditor(typeof(RewardData))]
     public class RewardDataEditor: AbstractRewardSystemEditor {

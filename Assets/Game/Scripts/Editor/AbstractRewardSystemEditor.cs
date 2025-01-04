@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.Reward {
 
     public abstract class AbstractRewardSystemEditor: Editor {
         [SerializeField] protected SpriteAtlas _spriteAtlas;

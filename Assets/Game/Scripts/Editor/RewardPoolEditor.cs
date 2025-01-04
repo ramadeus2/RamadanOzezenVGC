@@ -7,61 +7,90 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.Reward {
 
     [CustomEditor(typeof(RewardPool))]
     public class RewardPoolEditor: AbstractRewardSystemEditor {
 
-        private bool[] _rewardFoldouts;
-        [SerializeField] private DefaultAsset _targetFolder;
+        [SerializeField] private DefaultAsset _normalRewardTargetFolder;
+        [SerializeField] private DefaultAsset _specialRewardTargetFolder;
+        //[SerializeField] private DefaultAsset _targetFolder;
+        private RewardPool _rewardPool;
+        private bool[] _normalRewardFoldouts;
+        private bool[] _specialRewardFoldouts;
         public override void OnInspectorGUI()
         {
-            RewardPool rewardPool = (RewardPool)target;
-            if(rewardPool.RewardDatas == null)
-            {
-                return;
-            }
+            _rewardPool = (RewardPool)target;
 
-            InitializeRewardFoldouts(rewardPool);
+            InitializeRewardFoldouts();
 
             EditorGUILayout.LabelField("Reward Pool Editor", EditorStyles.boldLabel);
+
             EditorGUILayout.Space();
 
-            VisualizeRewardList(rewardPool);
-            AddNewRewardButton(rewardPool);
+
+            EditorGUILayout.LabelField("Normal Rewards", EditorStyles.boldLabel);
+            VisualizeRewardList(_rewardPool.NormalRewardDatas, _normalRewardFoldouts);
+            AddNormalRewardButton();
+
+
+            EditorGUILayout.LabelField("Special Rewards", EditorStyles.boldLabel);
+            VisualizeRewardList(_rewardPool.SpecialRewardDatas, _specialRewardFoldouts);
+            AddSpecialRewardButton();
+
+            EditorGUILayout.Space();
+            AddAllPossibleRewardsAsNormal();
             if(GUI.changed)
             {
-                EditorUtility.SetDirty(rewardPool);
+                EditorUtility.SetDirty(_rewardPool);
             }
         }
 
-        private void InitializeRewardFoldouts(RewardPool rewardPool)
+        private void InitializeRewardFoldouts()
         {
-            if(_rewardFoldouts == null || _rewardFoldouts.Length != rewardPool.RewardDatas.Count)
+            if(_rewardPool.NormalRewardDatas != null)
             {
-                _rewardFoldouts = new bool[rewardPool.RewardDatas.Count];
-                for(int i = 0; i < _rewardFoldouts.Length; i++)
+                if(_normalRewardFoldouts == null || _normalRewardFoldouts.Length != _rewardPool.NormalRewardDatas.Count)
                 {
-                    _rewardFoldouts[i] = true;
+                    _normalRewardFoldouts = new bool[_rewardPool.NormalRewardDatas.Count];
+                    //for(int i = 0; i < _normalRewardFoldouts.Length; i++)
+                    //{
+                    //    _normalRewardFoldouts[i] = true;
+                    //}
+                }
+            }
+            if(_rewardPool.SpecialRewardDatas != null)
+            {
+                if(_specialRewardFoldouts == null || _specialRewardFoldouts.Length != _rewardPool.SpecialRewardDatas.Count)
+                {
+                    _specialRewardFoldouts = new bool[_rewardPool.SpecialRewardDatas.Count];
+                    //for(int i = 0; i < _specialRewardFoldouts.Length; i++)
+                    //{
+                    //    _specialRewardFoldouts[i] = true;
+                    //}
                 }
             }
         }
 
-        private void VisualizeRewardList(RewardPool rewardPool)
+        private void VisualizeRewardList(List<RewardData> rewardDatas, bool[] rewardFoldouts)
         {
-            for(int i = 0; i < rewardPool.RewardDatas.Count; i++)
+            if(rewardDatas == null)
             {
-                RewardData reward = rewardPool.RewardDatas[i];
+                return;
+            }
+            for(int i = 0; i < rewardDatas.Count; i++)
+            {
+                RewardData reward = rewardDatas[i];
 
                 EditorGUILayout.BeginVertical("box");
 
-                _rewardFoldouts[i] = EditorGUILayout.Foldout(_rewardFoldouts[i], reward.RewardName, true);
+                rewardFoldouts[i] = EditorGUILayout.Foldout(rewardFoldouts[i], reward.RewardName, true);
 
-                if(_rewardFoldouts[i])
+                if(rewardFoldouts[i])
                 {
-                    rewardPool.RewardDatas[i] = (RewardData)EditorGUILayout.ObjectField(
+                    rewardDatas[i] = (RewardData)EditorGUILayout.ObjectField(
                         "Reward Reference",
-                        rewardPool.RewardDatas[i],
+                        rewardDatas[i],
                         typeof(RewardData),
                         false
                     );
@@ -89,56 +118,55 @@ namespace WheelOfFortune {
 
                     } else
                     {
-                        RemoveReward(rewardPool, i);
+                        RemoveReward(rewardDatas, rewardFoldouts, i);
                     }
-                EditorGUILayout.Space(5);
+                    EditorGUILayout.Space(5);
 
-                GUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                if(GUILayout.Button("Move Upper", GUILayout.Width(120), GUILayout.Height(20)))
-                {
-                    if(i > 0)
+                    GUILayout.BeginHorizontal();
+                    GUILayout.FlexibleSpace();
+                    if(GUILayout.Button("Move Upper", GUILayout.Width(120), GUILayout.Height(20)))
                     {
-                        RewardData temp = rewardPool.RewardDatas[i - 1];
-                        rewardPool.RewardDatas[i - 1] = rewardPool.RewardDatas[i];
-                        rewardPool.RewardDatas[i] = temp;
+                        if(i > 0)
+                        {
+                            RewardData temp = rewardDatas[i - 1];
+                            rewardDatas[i - 1] = rewardDatas[i];
+                            rewardDatas[i] = temp;
+                        }
+                        break;
                     }
-                    break;
-                }
-                GUILayout.FlexibleSpace();
+                    GUILayout.FlexibleSpace();
 
-                if(GUILayout.Button("Remove Reward From The List", GUILayout.Width(240), GUILayout.Height(20)))
-                {
-                    RemoveReward(rewardPool, i);
-                    break;
-                }
-                GUILayout.FlexibleSpace();
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-
-
-                if(GUILayout.Button("Move Lower", GUILayout.Width(120), GUILayout.Height(20)))
-                {
-                    if(i >= 0 && i < rewardPool.RewardDatas.Count - 1)
+                    if(GUILayout.Button("Remove Reward From The List", GUILayout.Width(240), GUILayout.Height(20)))
                     {
-                        RewardData temp = rewardPool.RewardDatas[i + 1];
-                        rewardPool.RewardDatas[i + 1] = rewardPool.RewardDatas[i];
-                        rewardPool.RewardDatas[i] = temp;
+                        RemoveReward(rewardDatas, rewardFoldouts, i);
+                        break;
                     }
-                    break;
-                }
-                GUILayout.FlexibleSpace();
+                    GUILayout.FlexibleSpace();
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    GUILayout.FlexibleSpace();
 
-                if(GUILayout.Button("Completely Delete Reward Data", GUILayout.Width(240), GUILayout.Height(20)))
-                {
-                    AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(rewardPool.RewardDatas[i]));
-                    RemoveReward(rewardPool, i);
-                    break;
-                }
-                GUILayout.FlexibleSpace();
 
-                GUILayout.EndHorizontal();
+                    if(GUILayout.Button("Move Lower", GUILayout.Width(120), GUILayout.Height(20)))
+                    {
+                        if(i >= 0 && i < rewardDatas.Count - 1)
+                        {
+                            RewardData temp = rewardDatas[i + 1];
+                            rewardDatas[i + 1] = rewardDatas[i];
+                            rewardDatas[i] = temp;
+                        }
+                        break;
+                    }
+                    GUILayout.FlexibleSpace();
+
+                    if(GUILayout.Button("Completely Delete Reward Data", GUILayout.Width(240), GUILayout.Height(20)))
+                    {
+                        CompletelyRemoveReward(rewardDatas, rewardFoldouts, i);
+                        break;
+                    }
+                    GUILayout.FlexibleSpace();
+
+                    GUILayout.EndHorizontal();
 
                 }
                 EditorGUILayout.EndVertical();
@@ -146,29 +174,79 @@ namespace WheelOfFortune {
             }
         }
 
-        private void AddNewRewardButton(RewardPool rewardPool)
+        private void CompletelyRemoveReward(List<RewardData> rewardDatas, bool[] rewardFoldouts, int i)
         {
-            if(GUILayout.Button("Add New Reward"))
+            AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(rewardDatas[i]));
+            RemoveReward(rewardDatas, rewardFoldouts, i);
+        }
+
+        private void AddNormalRewardButton()
+        {
+            if(GUILayout.Button("Add Normal Reward"))
             {
-                RewardData newReward = CreateInstance<RewardData>(); 
-                string folderPath = AssetDatabase.GetAssetPath(_targetFolder);
-                string fullPath = $"{folderPath}/NewReward_{rewardPool.RewardDatas.Count + 1}.asset";
+                RewardData newReward = CreateInstance<RewardData>();
+                string folderPath = AssetDatabase.GetAssetPath(_normalRewardTargetFolder);
+                string fullPath = $"{folderPath}/NormalReward_{_rewardPool.NormalRewardDatas.Count + 1}.asset";
                 AssetDatabase.CreateAsset(newReward, fullPath);
                 AssetDatabase.SaveAssets();
 
-                rewardPool.RewardDatas.Add(newReward);
-                ArrayUtility.Add(ref _rewardFoldouts, true);
+                _rewardPool.NormalRewardDatas.Add(newReward);
+                ArrayUtility.Add(ref _normalRewardFoldouts, true);
 
-                EditorUtility.SetDirty(rewardPool);
+                EditorUtility.SetDirty(_rewardPool);
+            }
+        }
+        private void AddSpecialRewardButton()
+        {
+            if(GUILayout.Button("Add Special Reward"))
+            {
+                RewardData newReward = CreateInstance<RewardData>();
+                string folderPath = AssetDatabase.GetAssetPath(_specialRewardTargetFolder);
+                string fullPath = $"{folderPath}/SpecialReward_{_rewardPool.SpecialRewardDatas.Count + 1}.asset";
+                AssetDatabase.CreateAsset(newReward, fullPath);
+                AssetDatabase.SaveAssets();
+
+                _rewardPool.SpecialRewardDatas.Add(newReward);
+                ArrayUtility.Add(ref _specialRewardFoldouts, true);
+
+                EditorUtility.SetDirty(_rewardPool);
+            }
+        }
+        private void AddAllPossibleRewardsAsNormal()
+        {
+            if(GUILayout.Button("Add All As Normal Rewards"))
+            {
+                for(int i = 0; i < _rewardPool.NormalRewardDatas.Count; i++)
+                {
+                    CompletelyRemoveReward(_rewardPool.NormalRewardDatas, _normalRewardFoldouts, i);
+                }
+                for(int i = 0; i < _spriteAtlas.spriteCount; i++)
+                {
+
+                    RewardData newReward = CreateInstance<RewardData>();
+                    string folderPath = AssetDatabase.GetAssetPath(_normalRewardTargetFolder);
+                    string fullPath = $"{folderPath}/NormalReward_{_rewardPool.NormalRewardDatas.Count + 1}.asset";
+                    if(i < _spriteAtlas.spriteCount)
+                    {
+                    newReward.selectedSpriteIndex= i;
+                    }
+                    AssetDatabase.CreateAsset(newReward, fullPath);
+                    AssetDatabase.SaveAssets();
+
+                    _rewardPool.NormalRewardDatas.Add(newReward);
+                    ArrayUtility.Add(ref _normalRewardFoldouts, true);
+
+                    EditorUtility.SetDirty(_rewardPool);
+                }
             }
         }
 
-        private void RemoveReward(RewardPool rewardPool, int i)
+        private void RemoveReward(List<RewardData> rewardDatas, bool[] rewardFoldouts, int i)
         {
-            rewardPool.RewardDatas.RemoveAt(i);
-            ArrayUtility.RemoveAt(ref _rewardFoldouts, i);
+            rewardDatas.RemoveAt(i);
+            ArrayUtility.RemoveAt(ref rewardFoldouts, i);
 
-            EditorUtility.SetDirty(rewardPool);
+            EditorUtility.SetDirty(_rewardPool);
         }
     }
 }
