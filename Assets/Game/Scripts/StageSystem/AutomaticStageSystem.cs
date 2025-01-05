@@ -9,35 +9,35 @@ namespace WheelOfFortune.Stage {
     public class AutomaticStageSystem: AbstractStageSystem  {
 
         [SerializeField] private int _stageCount;
-        [SerializeField] private StageData _currentStage;
-        private int _currentStageNo = -1;
+        private RewardPool _rewardPool;
 
         private void Start()
         {
-            InitializeNextStage();
+
+            PrepareNextStage();
         }
   
-        public void InitializeNextStage()
+        private void InitializeNextStage()
         { 
-            _currentStageNo++;
+           
             _currentStage = ScriptableObject.CreateInstance<StageData>();
             StageZone stageZone = GetStageZone();
             List<RewardData> rewardDatas = InitializeRewardsForThisStage(stageZone);
-            _currentStage.InitializeStage(rewardDatas, _currentStageNo, stageZone);
+            _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone);
+            ReleaseRewardPool();
+            _currentStageNo++;
 
         }
-        private StageZone GetStageZone()
+        public override void PrepareNextStage()
         {
-            StageZone stageZone = StageZone.DangerZone;
-            if(_currentStageNo != 0 && _currentStageNo % Consts.STAGE_SUPERZONE_MULTIPLIER == 0)
+            if(_currentStageNo >= _stageCount)
             {
-                stageZone = StageZone.SuperZone;
-            } else if(_currentStageNo != 0 && _currentStageNo % Consts.STAGE_SAFEZONE_MULTIPLIER == 0)
-            {
-                stageZone = StageZone.SafeZone;
+                return;
             }
-            return stageZone;
+            GetRewardPool(InitializeNextStage);
+
         }
+       
         private List<RewardData> InitializeRewardsForThisStage(StageZone stageZone)
         {
              
@@ -94,6 +94,19 @@ namespace WheelOfFortune.Stage {
 
             return selectedRewards;
 
+        }
+        protected void GetRewardPool(System.Action task)
+        {
+            AddressablesManager.Instance.GetRewardPool((rewardPool) =>
+            {
+                _rewardPool = rewardPool;
+                task?.Invoke();
+            });
+        }
+        protected void ReleaseRewardPool()
+        {
+            _rewardPool = null;
+            AddressablesManager.Instance.ReleaseRewardPool();
         }
     }
 }

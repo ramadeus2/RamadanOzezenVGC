@@ -8,7 +8,7 @@ namespace WheelOfFortune.Reward {
 
     public abstract class AbstractRewardSystemEditor: Editor {
         [SerializeField] protected SpriteAtlas _spriteAtlas;
-     
+
         protected string[] _allSpriteNames;
 
         protected void VisualizeRewardSprite(Sprite spritePreview)
@@ -44,9 +44,13 @@ namespace WheelOfFortune.Reward {
                 _allSpriteNames[i] = sprites[i].name.Replace("(Clone)", string.Empty);
             }
             rewardData.selectedSpriteIndex = EditorGUILayout.Popup(iconLabel, rewardData.selectedSpriteIndex, _allSpriteNames);
-            rewardData.InitializeSpriteName(_allSpriteNames[rewardData.selectedSpriteIndex]);
+            if(_allSpriteNames.Length > rewardData.selectedSpriteIndex)
+            {
+                rewardData.InitializeSpriteName(_allSpriteNames[rewardData.selectedSpriteIndex]);
             Sprite spritePreview = sprites[rewardData.selectedSpriteIndex];
             return spritePreview;
+            }
+            return null;
         }
     }
 }

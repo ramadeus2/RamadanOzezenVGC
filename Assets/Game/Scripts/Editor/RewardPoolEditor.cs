@@ -1,25 +1,26 @@
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
+using System.Collections.Generic; 
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.U2D;
+using UnityEngine; 
 
 namespace WheelOfFortune.Reward {
 
     [CustomEditor(typeof(RewardPool))]
     public class RewardPoolEditor: AbstractRewardSystemEditor {
-
         [SerializeField] private DefaultAsset _normalRewardTargetFolder;
         [SerializeField] private DefaultAsset _specialRewardTargetFolder;
+        [SerializeField] private bool _simpleMode;
         //[SerializeField] private DefaultAsset _targetFolder;
         private RewardPool _rewardPool;
         private bool[] _normalRewardFoldouts;
         private bool[] _specialRewardFoldouts;
         public override void OnInspectorGUI()
         {
+           _simpleMode = EditorGUILayout.Toggle("Simple Mode",_simpleMode);
+            if(_simpleMode)
+            {
+                base.OnInspectorGUI();
+                return;
+            }
             _rewardPool = (RewardPool)target;
 
             InitializeRewardFoldouts();

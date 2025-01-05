@@ -45,6 +45,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f613e87eb599c842aca06270e0f94c2, type: 2}
   - {fileID: 11400000, guid: 99e5690ccfc8ee041bf42807c3f1d872, type: 2}
   - {fileID: 11400000, guid: 58640a2013562c0418337ad46314526f, type: 2}
-  - {fileID: 11400000, guid: 9bdfde3561504aa4385bde339207975f, type: 2}
   _specialRewardDatas: []
   _bombData: {fileID: 11400000, guid: c916f8bc327298f44884fcaf43b4f396, type: 2}

@@ -37,6 +37,14 @@ MonoBehaviour:
     m_Address: Assets/Game/Sprites/DemoSprites/SpriteAtlases/SpinSprites.spriteatlas
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 228b8e8d2c73ec545aa0d66e23679361
+    m_Address: Assets/Game/ScriptableObjects/RewardPool/RewardPool.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 84a01bebc0a2f364b88c647b7ca7608d
+    m_Address: Assets/Game/ScriptableObjects/Pools/StagePool.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: efa7c6a2300425043ac48e2f8325b1cd, type: 2}
   m_SchemaSet:

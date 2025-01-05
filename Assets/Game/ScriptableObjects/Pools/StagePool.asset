@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db2808bf82a98434a950d18316451827, type: 3}
+  m_Name: StagePool
+  m_EditorClassIdentifier: 
+  _stageDatas:
+  - {fileID: 11400000, guid: 79756b6a96b83104eae7d43666e42241, type: 2}
+  - {fileID: 11400000, guid: 575675f7892b940419f663248c9b0d0f, type: 2}
+  - {fileID: 11400000, guid: 02916665d4a503240b2e77918f850ce2, type: 2}
+  - {fileID: 11400000, guid: 7bece7cf39be65c45b682584a747183c, type: 2}
+  - {fileID: 11400000, guid: 008739e767d181345b2d17b093ee5248, type: 2}

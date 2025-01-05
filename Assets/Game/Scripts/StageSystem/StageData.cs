@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using WheelOfFortune.Reward;
 using WheelOfFortune.Utilities;
@@ -16,13 +17,10 @@ namespace WheelOfFortune.Stage {
         [SerializeField] private StageZone _stageZone;
         public StageZone StageZone => _stageZone;
 
-        public void InitializeStage(List<RewardData> rewardDatas, int stageNo, StageZone stageZone)
-        {
-            _rewardDatas = rewardDatas;
-            _stageNo = stageNo;
-            _stageZone = stageZone;
+        public void RunStage()
+        { 
             int rewardAmountMultiplier = 1;
-            switch(stageZone)
+            switch(_stageZone)
             {
                 case StageZone.SafeZone:
                     rewardAmountMultiplier = 2;
@@ -32,8 +30,28 @@ namespace WheelOfFortune.Stage {
                     break;
                 default:
                     break;
-            } 
-            PickerWheel.Instance.UpdatePieces(rewardDatas, rewardAmountMultiplier);
+            }
+            PickerWheel.Instance.UpdatePieces(_rewardDatas, rewardAmountMultiplier);
         }
+        public void RunStage(List<RewardData> rewardDatas, int stageNo, StageZone stageZone)
+        {
+            _rewardDatas = rewardDatas;
+            _stageNo = stageNo;
+            _stageZone = stageZone;
+            RunStage();
+        }
+        public void InitializeStageData( int stageNo, StageZone stageZone,RewardData bombData=null)
+        { 
+            _stageNo = stageNo;
+            _stageZone = stageZone;
+            RewardData[] rewardDataArray = new RewardData[Consts.STAGE_REWARD_AMOUNT];
+            if(stageZone == StageZone.DangerZone)
+            {
+                rewardDataArray[0] =bombData; 
+            }
+            _rewardDatas = rewardDataArray.ToList();
+            
+        }
+
     }
 }

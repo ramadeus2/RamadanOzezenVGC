@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5036524e6509c9341bd0cd838f5feb6e, type: 3}
+  m_Name: Stage_4
+  m_EditorClassIdentifier: 
+  _rewardDatas:
+  - {fileID: 11400000, guid: c916f8bc327298f44884fcaf43b4f396, type: 2}
+  - {fileID: 11400000, guid: a78392a246dee02438b18b3a615757f2, type: 2}
+  - {fileID: 11400000, guid: 26fa5b87fc6434142ae53d2917c4f36d, type: 2}
+  - {fileID: 11400000, guid: 390c979946eeef14f8eaa8586ded519d, type: 2}
+  - {fileID: 11400000, guid: 0e2534e41202b404ba2b2e691b2c57c8, type: 2}
+  - {fileID: 11400000, guid: 17fe483a042c17149bd20b48668c8ed6, type: 2}
+  - {fileID: 11400000, guid: d4e8e1f6352efdf44af390d329c9df9b, type: 2}
+  - {fileID: 11400000, guid: 58640a2013562c0418337ad46314526f, type: 2}
+  _stageNo: 4
+  _stageZone: 0

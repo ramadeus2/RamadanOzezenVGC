@@ -108,7 +108,7 @@ namespace WheelOfFortune {
 
         private void SetNextStage()
         {
-            (AutomaticStageSystem.Instance as AutomaticStageSystem).InitializeNextStage();
+            AutomaticStageSystem.Instance.PrepareNextStage();
         }
     }
 }
