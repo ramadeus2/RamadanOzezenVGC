@@ -19,11 +19,11 @@ namespace WheelOfFortune.Reward {
             Sprite spritePreview = SetSprite(rewardData);
             VisualizeRewardSprite(spritePreview);
 
-            if(GUILayout.Button("Add Or Update Me To Pool"))
-            {
-                rewardData.InitializeId();
-                _rewardPool.AddOrUpdateReward(rewardData);
-            }
+            //if(GUILayout.Button("Add Or Update Me To Pool"))
+            //{
+                //rewardData.InitializeId();
+                //_rewardPool.AddOrUpdateReward(rewardData);
+            //}
         }
        
 

@@ -15,5 +15,7 @@ MonoBehaviour:
   _rewardName: NormalReward_1
   _minAmount: 5
   _maxAmount: 15
-  _probability: 5
+  _probability: 55
+  _isBomb: 0
+  _spriteName: ui_icon_baseball_cap_easter
   selectedSpriteIndex: 0

@@ -20,19 +20,19 @@ namespace WheelOfFortune.Reward {
 
 
 
-        public void AddOrUpdateReward(RewardData rewardData)
-        { 
-            for(int i = 0; i < _normalRewardDatas.Count; i++)
-            {
-                if(_normalRewardDatas[i].RewardId == rewardData.RewardId)
-                {
-                    _normalRewardDatas[i] = rewardData;
-                    return;
-                }
-            }
-            _normalRewardDatas.Add(rewardData);
+        //public void AddOrUpdateReward(RewardData rewardData)
+        //{ 
+        //    for(int i = 0; i < _normalRewardDatas.Count; i++)
+        //    {
+        //        if(_normalRewardDatas[i].RewardId == rewardData.RewardId)
+        //        {
+        //            _normalRewardDatas[i] = rewardData;
+        //            return;
+        //        }
+        //    }
+        //    _normalRewardDatas.Add(rewardData);
          
-        } 
+        //} 
         //public List<RewardData> GetRewardDatasByRank( )
         //{
         //    List<RewardData> rewardDatas = new List<RewardData>();

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: NormalReward_18
   m_EditorClassIdentifier: 
-  _rewardName: 
+  _rewardName: NormalReward_18
   _minAmount: 5
   _maxAmount: 15
-  _probability: 100
+  _probability: 55
+  _isBomb: 0
+  _spriteName: ui_icon_render_cons_healthshot_2_regenerator
   selectedSpriteIndex: 17

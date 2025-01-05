@@ -9,32 +9,22 @@ namespace WheelOfFortune.Stage {
     public class AutomaticStageSystem: AbstractStageSystem  {
 
         [SerializeField] private int _stageCount;
-        private RewardPool _rewardPool;
+        [SerializeField] private RewardPool _rewardPool;
 
         private void Start()
         {
 
-            PrepareNextStage();
+            InitializeNextStage();
         }
-  
-        private void InitializeNextStage()
+
+        public override void InitializeNextStage()
         { 
            
+            _currentStageNo++;
             _currentStage = ScriptableObject.CreateInstance<StageData>();
             StageZone stageZone = GetStageZone();
-            List<RewardData> rewardDatas = InitializeRewardsForThisStage(stageZone);
-            _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone);
-            ReleaseRewardPool();
-            _currentStageNo++;
-
-        }
-        public override void PrepareNextStage()
-        {
-            if(_currentStageNo >= _stageCount)
-            {
-                return;
-            }
-            GetRewardPool(InitializeNextStage);
+            List<RewardData> rewardDatas = InitializeRewardsForThisStage(stageZone); 
+            _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone); 
 
         }
        
@@ -95,18 +85,6 @@ namespace WheelOfFortune.Stage {
             return selectedRewards;
 
         }
-        protected void GetRewardPool(System.Action task)
-        {
-            AddressablesManager.Instance.GetRewardPool((rewardPool) =>
-            {
-                _rewardPool = rewardPool;
-                task?.Invoke();
-            });
-        }
-        protected void ReleaseRewardPool()
-        {
-            _rewardPool = null;
-            AddressablesManager.Instance.ReleaseRewardPool();
-        }
+       
     }
 }

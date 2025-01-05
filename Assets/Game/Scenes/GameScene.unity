@@ -410,7 +410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &315935499
 Transform:
   m_ObjectHideFlags: 0
@@ -439,6 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
+  _stagePool: {fileID: 11400000, guid: 84a01bebc0a2f364b88c647b7ca7608d, type: 2}
 --- !u!1 &469549348
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,16 +727,6 @@ MonoBehaviour:
   _dontDestroyOnLoad: 0
   _rewardAtlasReference:
     m_AssetGUID: 4311b6ec4ad9d034fa853940a97543e9
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  _rewardPoolReference:
-    m_AssetGUID: 228b8e8d2c73ec545aa0d66e23679361
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  _stagePoolReference:
-    m_AssetGUID: 84a01bebc0a2f364b88c647b7ca7608d
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
@@ -1031,7 +1022,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1639915322
 Transform:
   m_ObjectHideFlags: 0
@@ -1061,6 +1052,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
   _stageCount: 60
+  _rewardPool: {fileID: 11400000, guid: 228b8e8d2c73ec545aa0d66e23679361, type: 2}
 --- !u!1 &1894542825
 GameObject:
   m_ObjectHideFlags: 0

@@ -87,8 +87,8 @@ namespace WheelOfFortune.Reward {
 
                 rewardFoldouts[i] = EditorGUILayout.Foldout(rewardFoldouts[i], reward.RewardName, true);
 
-                if(rewardFoldouts[i])
-                {
+                //if(rewardFoldouts[i])
+                //{
                     rewardDatas[i] = (RewardData)EditorGUILayout.ObjectField(
                         "Reward Reference",
                         rewardDatas[i],
@@ -108,6 +108,8 @@ namespace WheelOfFortune.Reward {
                         {
                             EditorGUILayout.PropertyField(prop, true);
                         }
+                        reward.SetRewardName();
+
                         SetSprite(reward);
                         Sprite spritePreview = _spriteAtlas.GetSprite(reward.SpriteName);
                         VisualizeRewardSprite(spritePreview);
@@ -169,7 +171,7 @@ namespace WheelOfFortune.Reward {
 
                     GUILayout.EndHorizontal();
 
-                }
+                //}
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.Space();
             }

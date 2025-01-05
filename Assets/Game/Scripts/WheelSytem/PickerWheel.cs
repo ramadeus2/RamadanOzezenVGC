@@ -19,17 +19,15 @@ namespace WheelOfFortune {
         private AddressablesManager _addressablesManager;
         private bool _isSpinning = false;
         private SpriteAtlas _spriteAtlas;
-        private void OnValidate()
-        {
+     
+        private void OnEnable()
+        { 
             if(!_spinButton)
             {
                 return;
             }
             _spinButton.onClick.RemoveAllListeners();
             _spinButton.onClick.AddListener(StartSpin);
-        }
-        private void OnEnable()
-        {
             _addressablesManager = AddressablesManager.Instance;
             InitializePieces();
         }
@@ -52,8 +50,7 @@ namespace WheelOfFortune {
                 _spriteAtlas = spriteAtlas;
                 for(int i = 0; i < _wheelSegments.Length; i++)
                 {
-                    int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier;
-
+                    int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier; 
                     _wheelSegments[i].InitializePieceData(rewardDatas[i], _spriteAtlas.GetSprite(rewardDatas[i].SpriteName), rewardAmount);
                 }
                 _addressablesManager.ReleaseRewardedAtlas();
@@ -108,7 +105,7 @@ namespace WheelOfFortune {
 
         private void SetNextStage()
         {
-            AutomaticStageSystem.Instance.PrepareNextStage();
+             AbstractStageSystem.Instance.InitializeNextStage();
         }
     }
 }
