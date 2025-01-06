@@ -13,23 +13,22 @@ namespace WheelOfFortune {
 
     public class WheelPiece: MonoBehaviour {
         [SerializeField] private Image _img;
-        [SerializeField] private TMP_Text _amountText;
+        [SerializeField] private TMP_Text _rewardAmountText;
 
-        private RewardData _rewardData;
-        public RewardData RewardData => _rewardData;
-
-
-        public void InitializePieceData(RewardData rewardData,Sprite icon, int amount  )
+        private RewardUnit _rewardUnit;
+        public RewardUnit RewardUnit => _rewardUnit;
+          
+        public void InitializePieceData(RewardUnit rewardUnit  )
         {
-            _rewardData = rewardData;
-            _img.sprite = icon;
-            if(rewardData.IsBomb)
+            _rewardUnit = rewardUnit;
+            _img.sprite = rewardUnit.RewardIcon; 
+            if(_rewardUnit.RewardData.IsBomb)
             {
-                _amountText.text = string.Empty;
+                _rewardAmountText.text = string.Empty;
 
             } else
             {
-            _amountText.text = $"{amount}x";
+                _rewardAmountText.text = $"{rewardUnit.AppliedRewardAmount}x";
             }
         }
        

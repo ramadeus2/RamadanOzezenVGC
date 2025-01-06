@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+ 
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.U2D;
-using WheelOfFortune.Reward;
-using WheelOfFortune.Stage;
+using UnityEngine.U2D; 
 
 namespace WheelOfFortune.Utilities {
 
     public class AddressablesManager: MonoSingleton<AddressablesManager> {
         [Header("Asset References")]
-        [SerializeField] private AssetReference _rewardAtlasReference; 
         private SpriteAtlas _loadedRewardAtlas; 
         public void GetRewardAtlas(  System.Action<SpriteAtlas> onAtlasLoaded)
         {
@@ -31,7 +27,6 @@ namespace WheelOfFortune.Utilities {
       
         public void ReleaseRewardedAtlas()
         {
-            _rewardAtlasReference.ReleaseAsset();
             _loadedRewardAtlas = null;
         }
        

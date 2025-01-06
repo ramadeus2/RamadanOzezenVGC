@@ -100,7 +100,7 @@ namespace WheelOfFortune.Stage {
                         int containIndex = -1;
                     if(stage != null)
                     {
-                        SerializedObject stageSerialized = new SerializedObject(stage); ;
+                        SerializedObject stageSerialized = new SerializedObject(stage);
                         if(_serializedObjects == null)
                         {
                             _serializedObjects = new List<SerializedObject>();

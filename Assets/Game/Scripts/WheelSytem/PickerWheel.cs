@@ -1,15 +1,13 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using TMPro;
+using DG.Tweening; 
 using WheelOfFortune.Utilities;
 using System.Collections.Generic;
 using WheelOfFortune.Reward;
 using UnityEngine.U2D;
 using WheelOfFortune.Stage;
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.UserInterface {
 
     public class PickerWheel: MonoSingleton<PickerWheel> {
         [SerializeField] private Button _spinButton;
@@ -19,15 +17,14 @@ namespace WheelOfFortune {
         private AddressablesManager _addressablesManager;
         private bool _isSpinning = false;
         private SpriteAtlas _spriteAtlas;
-     
+
         private void OnEnable()
-        { 
-            if(!_spinButton)
+        {
+            if(_spinButton)
             {
-                return;
+                _spinButton.onClick.RemoveAllListeners();
+                _spinButton.onClick.AddListener(StartSpin);
             }
-            _spinButton.onClick.RemoveAllListeners();
-            _spinButton.onClick.AddListener(StartSpin);
             _addressablesManager = AddressablesManager.Instance;
             InitializePieces();
         }
@@ -50,8 +47,10 @@ namespace WheelOfFortune {
                 _spriteAtlas = spriteAtlas;
                 for(int i = 0; i < _wheelSegments.Length; i++)
                 {
-                    int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier; 
-                    _wheelSegments[i].InitializePieceData(rewardDatas[i], _spriteAtlas.GetSprite(rewardDatas[i].SpriteName), rewardAmount);
+                    int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier;
+                    Sprite rewardIcon = _spriteAtlas.GetSprite(rewardDatas[i].SpriteName);
+                    RewardUnit rewardUnit = new RewardUnit(rewardDatas[i], rewardIcon, rewardAmount);
+                    _wheelSegments[i].InitializePieceData(rewardUnit);
                 }
                 _addressablesManager.ReleaseRewardedAtlas();
             });
@@ -65,47 +64,34 @@ namespace WheelOfFortune {
 
             float targetAngle = Random.Range(0, 360) + (360 * 5);
 
-            Sequence spinSequence = DOTween.Sequence();
-
-            spinSequence.Append(_wheel.DORotate(new Vector3(0, 0, -360), .5f, RotateMode.FastBeyond360)
-                .SetEase(Ease.InQuad));
-
-
-            spinSequence.Append(_wheel.DORotate(new Vector3(0, 0, -targetAngle), 2f, RotateMode.FastBeyond360)
-                .SetEase(Ease.OutQuad))
+            _wheel.DORotate(new Vector3(0, 0, -targetAngle), 3f, RotateMode.FastBeyond360)
+                .SetEase(Ease.InOutQuad) 
                 .OnComplete(() =>
                 {
-                    SnapToSegment(targetAngle % 360);
-                    _isSpinning = false;
+                    SnapAndFinish(targetAngle % 360);
                 });
         }
 
-        private void SnapToSegment(float finalAngle)
+        private void SnapAndFinish(float finalAngle)
         {
             float segmentAngle = 360f / _wheelSegments.Length;
 
             int closestSegmentIndex = Mathf.RoundToInt(finalAngle / segmentAngle) % _wheelSegments.Length;
 
             float snapAngle = closestSegmentIndex * segmentAngle;
-            _wheel.DORotate(new Vector3(0, 0, -snapAngle), 0.5f).SetEase(Ease.OutBack).OnComplete(() =>
+            _wheel.DORotate(new Vector3(0, 0, -snapAngle), 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
             {
                 CollectRewards(_wheelSegments[closestSegmentIndex]);
-                SetNextStage();
-            });
+                _isSpinning = false;
 
-            //Debug.Log(_wheelSegments[closestSegmentIndex].name, _wheelSegments[closestSegmentIndex].gameObject);
-
-
+            }); 
         }
 
         private void CollectRewards(WheelPiece wheelPiece)
         {
-            //throw new System.NotImplementedException();
+            UIManager.Instance.RewardEarned(wheelPiece.RewardUnit);
         }
 
-        private void SetNextStage()
-        {
-             AbstractStageSystem.Instance.InitializeNextStage();
-        }
+        
     }
 }

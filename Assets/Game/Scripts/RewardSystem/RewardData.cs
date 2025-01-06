@@ -7,8 +7,8 @@ namespace WheelOfFortune.Reward {
     [CreateAssetMenu(fileName = "NewReward", menuName = "WheelOfFortune/Reward/RewardData")]
     public class RewardData: ScriptableObject {
 
-        //[SerializeField] private string _rewardId;
-        //public string RewardId => _rewardId;
+        [SerializeField] private string _rewardId;
+        public string RewardId => _rewardId;
 
         [SerializeField] private string _rewardName;
         public string RewardName => _rewardName;
@@ -36,13 +36,13 @@ namespace WheelOfFortune.Reward {
         public string SpriteName => _spriteName;
 
         [HideInInspector] public int selectedSpriteIndex;
-        //public void InitializeId()
-        //{
-        //    if(string.IsNullOrEmpty(_rewardId))
-        //    {
-        //        _rewardId =System.Guid.NewGuid().ToString();
-        //    }
-        //}
+        public void InitializeId()
+        {
+            if(string.IsNullOrEmpty(_rewardId))
+            {
+                _rewardId = System.Guid.NewGuid().ToString();
+            }
+        }
         public void InitializeSpriteName(string name)
         {
             _spriteName = name;

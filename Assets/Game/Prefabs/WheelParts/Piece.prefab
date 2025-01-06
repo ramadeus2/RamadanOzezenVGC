@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _img: {fileID: 6282694199335700061}
-  _amountText: {fileID: 6282694199363206211}
+  _rewardAmountText: {fileID: 6282694199363206211}
 --- !u!1 &6282694199335700063
 GameObject:
   m_ObjectHideFlags: 0

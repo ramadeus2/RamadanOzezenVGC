@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using WheelOfFortune.Reward;
+using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Stage {

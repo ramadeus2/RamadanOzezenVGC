@@ -14,6 +14,7 @@ namespace WheelOfFortune.Reward {
         {
             base.OnInspectorGUI();
             rewardData = (RewardData)target;
+            rewardData.InitializeId();
             rewardData.SetRewardName();
 
             Sprite spritePreview = SetSprite(rewardData);
