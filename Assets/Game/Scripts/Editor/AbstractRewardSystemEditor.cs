@@ -7,7 +7,11 @@ using UnityEngine.U2D;
 namespace WheelOfFortune.Reward {
 
     public abstract class AbstractRewardSystemEditor: Editor {
-        [SerializeField] protected SpriteAtlas _spriteAtlas;
+        [SerializeField] protected SpriteAtlas _normalRewardSpriteAtlas;
+        [SerializeField] protected SpriteAtlas _specialRewardSpriteAtlas;
+        [SerializeField] protected SpriteAtlas _currencySpriteAtlas;
+        [SerializeField] protected Sprite _bombSprite ;
+
 
         protected string[] _allSpriteNames;
 
@@ -30,24 +34,46 @@ namespace WheelOfFortune.Reward {
                 EditorGUILayout.Space(15);
             }
         }
-        protected Sprite SetSprite(RewardData rewardData)
+        protected Sprite SetSprite(RewardData rewardData,bool onInspector)
         {
-            GUIContent iconLabel = new GUIContent("Reward Sprite");
+            SpriteAtlas spriteAtlas = null;
+                    GUIContent iconLabel = new GUIContent("Sprite");
+            switch(rewardData.RewardType)
+            {
+                case Utilities.RewardType.Normal:
+                    spriteAtlas = _normalRewardSpriteAtlas;
+                    break;
+                case Utilities.RewardType.Currency:
+                    spriteAtlas = _currencySpriteAtlas;
+                    break;
+                case Utilities.RewardType.Special:
+                    spriteAtlas = _specialRewardSpriteAtlas;
+                    break;
+                case Utilities.RewardType.Bomb:
 
-            _allSpriteNames = new string[_spriteAtlas.spriteCount];
+                     
+                    return _bombSprite;
+                default:
+                    break;
+            } 
 
-            Sprite[] sprites = new Sprite[_spriteAtlas.spriteCount];
-            _spriteAtlas.GetSprites(sprites);
+            _allSpriteNames = new string[spriteAtlas.spriteCount];
+
+            Sprite[] sprites = new Sprite[spriteAtlas.spriteCount];
+            spriteAtlas.GetSprites(sprites);
 
             for(int i = 0; i < _allSpriteNames.Length; i++)
             {
                 _allSpriteNames[i] = sprites[i].name.Replace("(Clone)", string.Empty);
             }
+            if(onInspector)
+            {
             rewardData.selectedSpriteIndex = EditorGUILayout.Popup(iconLabel, rewardData.selectedSpriteIndex, _allSpriteNames);
+            }
             if(_allSpriteNames.Length > rewardData.selectedSpriteIndex)
             {
                 rewardData.InitializeSpriteName(_allSpriteNames[rewardData.selectedSpriteIndex]);
-            Sprite spritePreview = sprites[rewardData.selectedSpriteIndex];
+            Sprite spritePreview = sprites[rewardData.selectedSpriteIndex]; 
             return spritePreview;
             }
             return null;

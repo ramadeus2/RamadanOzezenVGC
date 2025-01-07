@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: Bomb
   m_EditorClassIdentifier: 
+  _rewardId: 65717cd4-2c70-4aa2-9ba4-db2f9329ecee
   _rewardName: Bomb
-  _minAmount: 1
-  _maxAmount: 1
+  _minAmount: 5
+  _maxAmount: 15
   _probability: 100
-  _isBomb: 1
-  selectedSpriteIndex: 31
+  _rewardType: 3
+  _spriteName: ui_icon_baseball_cap_easter
+  _icon: {fileID: 0}
+  selectedSpriteIndex: 0

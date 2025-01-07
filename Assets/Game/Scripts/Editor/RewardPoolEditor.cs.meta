@@ -4,9 +4,14 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - _spriteAtlas: {fileID: 4343727234628468602, guid: 4311b6ec4ad9d034fa853940a97543e9, type: 2}
+  - _normalRewardSpriteAtlas: {fileID: 4343727234628468602, guid: 4311b6ec4ad9d034fa853940a97543e9, type: 2}
+  - _specialRewardSpriteAtlas: {fileID: 4343727234628468602, guid: 0aef12e7eb7aa674891c89d067dc6797, type: 2}
+  - _currencySpriteAtlas: {fileID: 4343727234628468602, guid: 92877a0f83095824e86cdc4390cb2a0e, type: 2}
+  - _bombSprite: {fileID: 21300000, guid: 97a6cd8eec250be45948843e9057b697, type: 3}
   - _normalRewardTargetFolder: {fileID: 102900000, guid: 0385958dc84ee114ca3478d3f4ecb12f, type: 3}
   - _specialRewardTargetFolder: {fileID: 102900000, guid: 92008065105231f44bd9b93c664bdd70, type: 3}
+  - _currenciesTargetFolder: {fileID: 102900000, guid: fefadb283beb47b44add227b5c7f56a4, type: 3}
+  - _bombTargetFolder: {fileID: 102900000, guid: e73073038112d6b419a4e9297a088524, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

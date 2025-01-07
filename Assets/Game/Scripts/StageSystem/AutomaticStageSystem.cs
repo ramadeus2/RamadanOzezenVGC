@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using WheelOfFortune.Reward;
+using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Stage {
@@ -22,7 +23,7 @@ namespace WheelOfFortune.Stage {
            
             _currentStageNo++;
             _currentStage = ScriptableObject.CreateInstance<StageData>();
-            StageZone stageZone = GetStageZone();
+            StageZone stageZone = GetStageZone(); 
             List<RewardData> rewardDatas = InitializeRewardsForThisStage(stageZone); 
             _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone); 
 
@@ -31,9 +32,16 @@ namespace WheelOfFortune.Stage {
         private List<RewardData> InitializeRewardsForThisStage(StageZone stageZone)
         {
              
-            List<RewardData> rewardDatas = _rewardPool.NormalRewardDatas;
+            List<RewardData> rewardDatas =new List<RewardData>();
+            for(int i = 0; i < _rewardPool.NormalRewardDatas.Count; i++)
+            {
+                rewardDatas.Add(_rewardPool.NormalRewardDatas[i]);
+            }
 
-
+            for(int i = 0; i < _rewardPool.CurrencyDatas.Count; i++)
+            {
+                rewardDatas.Add(_rewardPool.CurrencyDatas[i]);
+            }
 
             int totalPossibility = 0;
             foreach(var reward in rewardDatas)
@@ -46,7 +54,7 @@ namespace WheelOfFortune.Stage {
             int manuallyAddedItemCount = 0;
             if(willThereBeBomb)
             {
-                selectedRewards.Add(_rewardPool.BombData);
+                selectedRewards.Add(_rewardPool.BombData); 
                 manuallyAddedItemCount++;
             }
 
@@ -75,13 +83,7 @@ namespace WheelOfFortune.Stage {
                         break;
                     }
                 }
-            }
-            //for(int i = 0; i < selectedRewards.Count; i++)
-            //{
-            //    Debug.Log(selectedRewards[i]);
-
-            //}
-
+            } 
             return selectedRewards;
 
         }

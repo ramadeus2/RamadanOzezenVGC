@@ -24,7 +24,7 @@ namespace WheelOfFortune.Stage {
             }
             return stageZone;
         }
-       
+        
         public abstract void InitializeNextStage();
     }
 }

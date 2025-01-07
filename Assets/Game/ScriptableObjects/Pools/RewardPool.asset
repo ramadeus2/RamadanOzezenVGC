@@ -41,9 +41,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 73f364b253d50d646a97c9dff462a029, type: 2}
   - {fileID: 11400000, guid: dbd1e11880de0894fbef8afd86ee3c87, type: 2}
   - {fileID: 11400000, guid: 599168de894d0724ea0b6ceaf2fd4358, type: 2}
-  - {fileID: 11400000, guid: d4e8e1f6352efdf44af390d329c9df9b, type: 2}
-  - {fileID: 11400000, guid: 3f613e87eb599c842aca06270e0f94c2, type: 2}
-  - {fileID: 11400000, guid: 99e5690ccfc8ee041bf42807c3f1d872, type: 2}
-  - {fileID: 11400000, guid: 58640a2013562c0418337ad46314526f, type: 2}
-  _specialRewardDatas: []
+  _specialRewardDatas:
+  - {fileID: 11400000, guid: 1efc95497321d78438b86d3339d09a93, type: 2}
+  - {fileID: 11400000, guid: 9345f265fe0fc1c429661bb1ef034cea, type: 2}
+  - {fileID: 11400000, guid: 80d4c767f445f3143bd18eb120e07193, type: 2}
+  _currencyDatas:
+  - {fileID: 11400000, guid: 77596d8c72cd4c64cab4d77e9fdf0b2d, type: 2}
+  - {fileID: 11400000, guid: 05d7f0d08b79a874db1f01a2badd54a8, type: 2}
   _bombData: {fileID: 11400000, guid: c916f8bc327298f44884fcaf43b4f396, type: 2}

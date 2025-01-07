@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: NormalReward_26
   m_EditorClassIdentifier: 
-  _rewardName: NormalReward_26
+  _rewardId: 
+  _rewardName: 
   _minAmount: 5
   _maxAmount: 15
-  _probability: 55
-  _isBomb: 0
-  _spriteName: UI_Icons_Sniper_Points
+  _probability: 100
+  _rewardType: 0
+  _spriteName: 
+  _icon: {fileID: 0}
   selectedSpriteIndex: 25

@@ -31,7 +31,7 @@ namespace WheelOfFortune.Stage {
                 default:
                     break;
             }
-            PickerWheel.Instance.UpdatePieces(_rewardDatas, rewardAmountMultiplier);
+            PickerWheel.Instance.UpdatePieces(_rewardDatas,_stageZone, rewardAmountMultiplier);
         }
         public void RunStage(List<RewardData> rewardDatas, int stageNo, StageZone stageZone)
         {

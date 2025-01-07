@@ -1,8 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using WheelOfFortune.CurrencySystem;
 using WheelOfFortune.Reward;
 using WheelOfFortune.Stage;
+using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.UserInterface {
 
@@ -10,27 +13,54 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private UIRewardPanel _rewardPanel;
         [SerializeField] private UICardPanel _cardPanel;
 
+        private CurrencyManager _cm;
+        private StageZone _lastStageZone;
 
-        public void RewardEarned(RewardUnit rewardUnit)
+        [SerializeField] private Sprite _bombIcon;
+        public Sprite BombIcon => _bombIcon;
+        private void Start()
         {
-            bool isBomb = rewardUnit.RewardData.IsBomb;
-            _cardPanel.InitializePanel(rewardUnit.RewardIcon, isBomb);
-            if(!isBomb)
+            _cm = CurrencyManager.Instance;
+
+        }
+        public void CheckTheStage(RewardUnit rewardUnit)
+        {
+            bool isBomb = rewardUnit.RewardData.RewardType == Utilities.RewardType.Bomb;
+            //_cardPanel.InitializePanel(rewardUnit.RewardIcon, isBomb);
+            if(isBomb)
             {
+                _cardPanel.VisualizeBombPanel();
+            } else
+            {
+                _cardPanel.VisualizeSafePanel(rewardUnit.RewardIcon); 
                 _rewardPanel.InitializeReward(rewardUnit);
+
             }
         }
         public void GiveUpRewards()
         {
-            _cardPanel.ClosePanel(); 
         }
-        public void RequestRevive()
+        public void RequestRevive(/*int revivePrice*/)
         {
-            _cardPanel.ClosePanel(); 
+            if(_cm.TrySpending("Gold", 10))
+            {
+                _cardPanel.ClosePanel();
+                SetNextStage();
+            }
         }
         public void SetNextStage()
         {
             AbstractStageSystem.Instance.InitializeNextStage();
         }
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            //if(_isBomb)
+            //{
+            //    return;
+            //}
+            //ClosePanel();
+        }
+
+
     }
 }

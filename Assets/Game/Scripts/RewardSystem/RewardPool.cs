@@ -14,11 +14,17 @@ namespace WheelOfFortune.Reward {
         [SerializeField] private List<RewardData> _specialRewardDatas;
         public List<RewardData> SpecialRewardDatas => _specialRewardDatas;
 
-
+        [SerializeField] private List<RewardData> _currencyDatas;
+        public List<RewardData> CurrencyDatas => _currencyDatas; 
         [SerializeField] private  RewardData  _bombData;
         public  RewardData  BombData => _bombData;
+        
 
-
+        public void InitializeBomb(RewardData bombData)
+        {
+            _bombData = bombData;
+            bombData.InitializeRewardType(RewardType.Bomb); 
+        }
 
         //public void AddOrUpdateReward(RewardData rewardData)
         //{ 

@@ -12,4 +12,11 @@ namespace WheelOfFortune.Utilities {
         SuperZone
 
     }
+    public enum RewardType
+    {
+        Normal,
+        Currency,
+        Special,
+        Bomb
+    }
 }

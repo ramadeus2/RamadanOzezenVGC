@@ -18,7 +18,19 @@ MonoBehaviour:
   m_GUID: c46678d8a293468478fadeec39458b7b
   m_SerializeEntries:
   - m_GUID: 4311b6ec4ad9d034fa853940a97543e9
-    m_Address: Assets/Game/Sprites/DemoSprites/SpriteAtlases/RewardSprites.spriteatlas
+    m_Address: Assets/Game/Sprites/DemoSprites/SpriteAtlases/NormalRewardSprites.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2f190b379356d00409cb14710db1905d
+    m_Address: Assets/Game/ScriptableObjects/Currency/CurrencySettings.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 92877a0f83095824e86cdc4390cb2a0e
+    m_Address: Assets/Game/Sprites/DemoSprites/SpriteAtlases/CurrencySprites.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0aef12e7eb7aa674891c89d067dc6797
+    m_Address: Assets/Game/Sprites/DemoSprites/SpriteAtlases/SpecialRewardSprites.spriteatlas
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Stage_2
   m_EditorClassIdentifier: 
   _rewardDatas:
-  - {fileID: 11400000, guid: c916f8bc327298f44884fcaf43b4f396, type: 2}
-  - {fileID: 11400000, guid: 5236a3d37e0d2f741a4b4a29fe2f85f3, type: 2}
-  - {fileID: 11400000, guid: c4f1473c6a05e2847b8fcdfdb768615a, type: 2}
-  - {fileID: 11400000, guid: 0e2534e41202b404ba2b2e691b2c57c8, type: 2}
-  - {fileID: 11400000, guid: 494075f12e7b15f4685a4bc25bd06170, type: 2}
+  - {fileID: 11400000, guid: e4eb6472cd36e414d9e094200e4f2be7, type: 2}
+  - {fileID: 11400000, guid: 390c979946eeef14f8eaa8586ded519d, type: 2}
+  - {fileID: 11400000, guid: 390c979946eeef14f8eaa8586ded519d, type: 2}
+  - {fileID: 11400000, guid: 2b3dbe1ab22b69548897d11e0c8fdc13, type: 2}
   - {fileID: 11400000, guid: 71cc95f1b8189084e8644338a00a69ec, type: 2}
-  - {fileID: 11400000, guid: bd671ad2f0d235e4bba208f51d8682ff, type: 2}
-  - {fileID: 11400000, guid: 3f613e87eb599c842aca06270e0f94c2, type: 2}
+  - {fileID: 11400000, guid: 806201fd2d76dd74abfdc6ee25d06520, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   _stageNo: 2
   _stageZone: 0

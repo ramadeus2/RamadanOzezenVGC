@@ -22,7 +22,7 @@ namespace WheelOfFortune {
         {
             _rewardUnit = rewardUnit;
             _img.sprite = rewardUnit.RewardIcon; 
-            if(_rewardUnit.RewardData.IsBomb)
+            if(_rewardUnit.RewardData.RewardType == RewardType.Bomb)
             {
                 _rewardAmountText.text = string.Empty;
 

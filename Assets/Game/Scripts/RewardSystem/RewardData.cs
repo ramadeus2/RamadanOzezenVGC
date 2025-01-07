@@ -28,13 +28,12 @@ namespace WheelOfFortune.Reward {
         private int _probability = 100;
         public int Probability =>_probability;
 
-        [SerializeField]
-        private bool  _isBomb;
-        public bool IsBomb=> _isBomb;
+    
+        [SerializeField] private RewardType _rewardType;
+        public RewardType RewardType => _rewardType;
 
         [SerializeField] private string _spriteName;
-        public string SpriteName => _spriteName;
-
+        public string SpriteName => _spriteName; 
         [HideInInspector] public int selectedSpriteIndex;
         public void InitializeId()
         {
@@ -43,11 +42,16 @@ namespace WheelOfFortune.Reward {
                 _rewardId = System.Guid.NewGuid().ToString();
             }
         }
+        
         public void InitializeSpriteName(string name)
         {
             _spriteName = name;
         }
-
+        
+        public void InitializeRewardType(RewardType rewardType)
+        {
+            _rewardType = rewardType;
+        }
         public void SetRewardName()
         {
             if(string.IsNullOrEmpty(RewardName))

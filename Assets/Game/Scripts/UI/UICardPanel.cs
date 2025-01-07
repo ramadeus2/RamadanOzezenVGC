@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,21 +11,19 @@ namespace WheelOfFortune.UserInterface {
     public class UICardPanel: MonoBehaviour, IPointerClickHandler {
 
         [SerializeField] private Image _rewardImg;
+        [SerializeField] private Image _scaledClickImg;
         [SerializeField] private Button _giveUpButton;
         [SerializeField] private Button _reviveButton;
         
         
-        
-        [Header("Panel Data")]
-        [SerializeField] private Image _panelBackground;
-        [SerializeField] private Color _panelSafeColor;
-        [SerializeField] private Color _panelBombColor;
+         
+        [SerializeField] private GameObject _buttonsHolder;
+        [SerializeField] private Image _bombBackground;
         [Header("Card Data")]
         [SerializeField] private Image _cardBackground;
         [SerializeField] private Color _cardSafeColor;
         [SerializeField] private Color _cardBombColor;
-
-        private bool _isBomb;
+         
         private void OnEnable()
         {
             _reviveButton.onClick.AddListener(RequestRevive);
@@ -35,41 +34,42 @@ namespace WheelOfFortune.UserInterface {
             _reviveButton.onClick.RemoveListener(RequestRevive);
             _giveUpButton.onClick.RemoveListener(GiveUpRewards);
         }
-        public void InitializePanel(Sprite icon, bool isBomb)
-        {
-            _rewardImg.sprite = icon;
-            _isBomb = isBomb;
-            _giveUpButton.gameObject.SetActive(_isBomb);
-            _reviveButton.gameObject.SetActive(_isBomb);
-            if(isBomb)
-            {
-                _panelBackground.color = _panelBombColor;
-                _cardBackground.color = _cardBombColor;
-            } else
-            {
-                _panelBackground.color = _panelSafeColor;
-                _cardBackground.color = _cardSafeColor;
-            }
-            gameObject.SetActive(true);
-        }
+ 
        
         public void OnPointerClick(PointerEventData eventData)
-        {
-            if(_isBomb)
-            {
-                return;
-            }
+        { 
+            RewardApproved();
             ClosePanel();
         }
         public void ClosePanel()
         {
             gameObject.SetActive(false);
-            SetNextStage();
+            _buttonsHolder.SetActive(false);
+            _bombBackground.gameObject.SetActive(false);
+            _scaledClickImg.enabled = false; 
 
         }
         private void GiveUpRewards() => UIManager.Instance.GiveUpRewards();
         private void RequestRevive() => UIManager.Instance.RequestRevive();
-        private void SetNextStage() => UIManager.Instance.SetNextStage();
-         
+        private void RewardApproved() => UIManager.Instance.SetNextStage();
+
+        public void VisualizeBombPanel()
+        {
+            gameObject.SetActive(true);
+            _buttonsHolder.SetActive(true);
+                _cardBackground.color = _cardBombColor;
+            _bombBackground.gameObject.SetActive(true);
+            _giveUpButton.gameObject.SetActive(true);
+            _reviveButton.gameObject.SetActive(true);
+            _rewardImg.sprite = UIManager.Instance.BombIcon;
+        }
+
+        internal void VisualizeSafePanel(Sprite icon)
+        {
+            gameObject.SetActive(true);
+                _cardBackground.color = _cardSafeColor;
+            _rewardImg.sprite = icon;
+            _scaledClickImg.enabled = true;
+        }
     }
 }
