@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ namespace WheelOfFortune.UserInterface {
     public class UIManager: MonoSingleton<UIManager> {
         [SerializeField] private UIRewardPanel _rewardPanel;
         [SerializeField] private UICardPanel _cardPanel;
+        [SerializeField] private UICurrency _uiCurrency;
+        [SerializeField] private UIMainMenu _uiMainMenu;
 
         private CurrencyManager _cm;
         private StageZone _lastStageZone;
@@ -32,13 +35,15 @@ namespace WheelOfFortune.UserInterface {
                 _cardPanel.VisualizeBombPanel();
             } else
             {
-                _cardPanel.VisualizeSafePanel(rewardUnit.RewardIcon); 
+                _cardPanel.VisualizeSafePanel(rewardUnit.RewardIcon);
                 _rewardPanel.InitializeReward(rewardUnit);
 
             }
         }
         public void GiveUpRewards()
         {
+                _cardPanel.ClosePanel();
+            _uiMainMenu.gameObject.SetActive(true);
         }
         public void RequestRevive(/*int revivePrice*/)
         {
@@ -50,17 +55,11 @@ namespace WheelOfFortune.UserInterface {
         }
         public void SetNextStage()
         {
-            AbstractStageSystem.Instance.InitializeNextStage();
+            StageManager.Instance.InitializeNextStage();
         }
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            //if(_isBomb)
-            //{
-            //    return;
-            //}
-            //ClosePanel();
-        }
-
+         
+        public void InitializeCurrencyUI(List<CurrencyData> savedCurrencyDatas) => _uiCurrency.InitializeCurrencyUI(savedCurrencyDatas);
+        public void UpdateCurrencyUI() => _uiCurrency.UpdateCurrencyUI();
 
     }
 }

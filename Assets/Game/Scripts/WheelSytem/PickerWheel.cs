@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using WheelOfFortune.Reward;
 using UnityEngine.U2D;
 using WheelOfFortune.Stage;
+using WheelOfFortune.General;
 
 namespace WheelOfFortune.UserInterface {
 
@@ -14,7 +15,7 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private WheelPiece _piecePrefab;
         [SerializeField] private Image _wheel;
         [SerializeField] private Image _indicator;
-        private WheelPiece[] _wheelSegments = new WheelPiece[Consts.STAGE_REWARD_AMOUNT];
+        private WheelPiece[] _wheelSegments;
         private AddressablesManager _addressablesManager;
         private bool _isSpinning = false;
         private SpriteAtlas _normalRewardSpriteAtlas;
@@ -31,6 +32,7 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private Sprite _indicatorIconSilver;
         [SerializeField] private Sprite _indicatorIconGold;
 
+
         private void OnValidate()
         {
             _spinButton = GetComponentInChildren<Button>();
@@ -42,12 +44,18 @@ namespace WheelOfFortune.UserInterface {
                 _spinButton.onClick.RemoveAllListeners();
                 _spinButton.onClick.AddListener(StartSpin);
             }
+
             _addressablesManager = AddressablesManager.Instance;
             InitializePieces();
         }
 
         private void InitializePieces()
         {
+            if(_wheelSegments == null)
+            {
+                int length = GameManager.Instance.GameSettings.StageRewardAmount;
+                _wheelSegments = new WheelPiece[length];
+            }
             float angleOfEachPiece = 360f / _wheelSegments.Length;
 
             for(int i = 0; i < _wheelSegments.Length; i++)
@@ -155,7 +163,7 @@ namespace WheelOfFortune.UserInterface {
                 WheelPiece bomb = GetBomb();
                 if(bomb)
                 {
-                    CheckThisStage(bomb); 
+                    CheckThisStage(bomb);
                 } else
                 {
 

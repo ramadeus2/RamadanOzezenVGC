@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using WheelOfFortune.General;
 using WheelOfFortune.Reward;
 using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
@@ -11,13 +12,7 @@ namespace WheelOfFortune.Stage {
 
         [SerializeField] private int _stageCount;
         [SerializeField] private RewardPool _rewardPool;
-
-        private void Start()
-        {
-
-            InitializeNextStage();
-        }
-
+         
         public override void InitializeNextStage()
         { 
            
@@ -61,7 +56,7 @@ namespace WheelOfFortune.Stage {
 
             List<RewardData> availableRewards = new List<RewardData>(rewardDatas);
 
-            for(int i = 0; i < Consts.STAGE_REWARD_AMOUNT - manuallyAddedItemCount; i++) // if we added the bomb
+            for(int i = 0; i < GameManager.Instance.GameSettings.StageRewardAmount - manuallyAddedItemCount; i++) // if we added the bomb
             {
                 if(availableRewards.Count == 0)
                     break;

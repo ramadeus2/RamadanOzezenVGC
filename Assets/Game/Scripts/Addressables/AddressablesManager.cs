@@ -9,8 +9,7 @@ using WheelOfFortune.CurrencySystem;
 namespace WheelOfFortune.Utilities {
 
     public class AddressablesManager: MonoSingleton<AddressablesManager> {
-        [Header("Asset References")]
-
+ 
         private Dictionary<string, SpriteAtlas> _loadedRewardAtlases;
         private CurrencySettings _loadedCurrencySettings;
         private void OnEnable()

@@ -9,11 +9,7 @@ namespace WheelOfFortune.Stage {
 public class ManualStageSystem : AbstractStageSystem
 {
         [SerializeField] private StagePool _stagePool;
-        private void Start()
-        {
-            InitializeNextStage();
-
-        }
+       
 
         public override void InitializeNextStage()
         {

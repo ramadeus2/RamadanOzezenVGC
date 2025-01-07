@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WheelOfFortune.CurrencySystem;
+using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.CurrencySystem {
@@ -10,14 +11,20 @@ namespace WheelOfFortune.CurrencySystem {
     public class CurrencyManager: MonoSingleton<CurrencyManager> {
 
         private CurrencyData[] _playerCurrencyDatas;
+        private AddressablesManager _addressablesManager;
+        private UIManager _uiManager;
         private void Start()
         {
+            _uiManager = UIManager.Instance;
+            _addressablesManager = AddressablesManager.Instance;
             SynchronizeSavedCurrencyDatas();
         }
 
         private void SynchronizeSavedCurrencyDatas()
         {
-            AddressablesManager.Instance.GetCurrencySettings((availableSettings) =>
+            _addressablesManager.GetRewardAtlas((availableSettings) =>
+            {
+                _addressablesManager.GetCurrencySettings((availableSettings) =>
             {
                 List<CurrencyDataSaveInfo> savedCurrencyDataInfos = SaveSystem.LoadCurrencyDatas();
                 List<CurrencyData> savedCurrencyDatas = new List<CurrencyData>();
@@ -46,7 +53,9 @@ namespace WheelOfFortune.CurrencySystem {
                 }
                 _playerCurrencyDatas = savedCurrencyDatas.ToArray();
                 AddressablesManager.Instance.ReleaseCurrencySettings();
-            });
+                _uiManager.InitializeCurrencyUI(savedCurrencyDatas);
+                });
+            }, "CurrencySprites");
         }
 
 
@@ -65,12 +74,14 @@ namespace WheelOfFortune.CurrencySystem {
         {
             currencyData.ExtractAmount(amount);
             SaveSystem.UpdateCurrency(currencyData);
+            _uiManager.UpdateCurrencyUI();
         }
         public void CurrencyEarned(string currenyName, int amount)
         {
             CurrencyData currencyData = GetCurrencyData(currenyName);
             currencyData.InsertAmount(amount);
             SaveSystem.UpdateCurrency(currencyData);
+            _uiManager.UpdateCurrencyUI();
         }
         public CurrencyData GetCurrencyData(string currencyName)
         {

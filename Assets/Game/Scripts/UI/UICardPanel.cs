@@ -22,8 +22,7 @@ namespace WheelOfFortune.UserInterface {
         [Header("Card Data")]
         [SerializeField] private Image _cardBackground;
         [SerializeField] private Color _cardSafeColor;
-        [SerializeField] private Color _cardBombColor;
-         
+        [SerializeField] private Color _cardBombColor; 
         private void OnEnable()
         {
             _reviveButton.onClick.AddListener(RequestRevive);

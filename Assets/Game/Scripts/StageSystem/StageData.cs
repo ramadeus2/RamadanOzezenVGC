@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using WheelOfFortune.General;
 using WheelOfFortune.Reward;
 using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
@@ -40,11 +41,11 @@ namespace WheelOfFortune.Stage {
             _stageZone = stageZone;
             RunStage();
         }
-        public void InitializeStageData( int stageNo, StageZone stageZone,RewardData bombData=null)
+        public void InitializeStageData( int stageNo, StageZone stageZone,GameSettings gameSettings,RewardData bombData=null)
         { 
             _stageNo = stageNo;
             _stageZone = stageZone;
-            RewardData[] rewardDataArray = new RewardData[Consts.STAGE_REWARD_AMOUNT];
+            RewardData[] rewardDataArray = new RewardData[gameSettings.StageRewardAmount];
             if(stageZone == StageZone.DangerZone)
             {
                 rewardDataArray[0] =bombData; 

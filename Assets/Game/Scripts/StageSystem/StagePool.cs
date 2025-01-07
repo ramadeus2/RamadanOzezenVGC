@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WheelOfFortune.General;
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Stage { 
@@ -8,13 +9,13 @@ namespace WheelOfFortune.Stage {
 public class StagePool : ScriptableObject {
     [SerializeField] private List<StageData> _stageDatas;
     public List<StageData> StageDatas => _stageDatas;
-        public StageZone GetStageZone(int stageNo)
+        public StageZone GetStageZone(int stageNo,GameSettings gameSettings)
         {
             StageZone stageZone = StageZone.DangerZone;
-            if(stageNo != 0 && stageNo % Consts.STAGE_SUPERZONE_MULTIPLIER == 0)
+            if(stageNo != 0 && stageNo % gameSettings.StageSuperZoneMultiplier== 0)
             {
                 stageZone = StageZone.SuperZone;
-            } else if(stageNo != 0 && stageNo % Consts.STAGE_SAFEZONE_MULTIPLIER == 0)
+            } else if(stageNo != 0 && stageNo % gameSettings.StageSafeZoneMultiplier == 0)
             {
                 stageZone = StageZone.SafeZone;
             }
