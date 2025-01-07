@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WheelOfFortune.CurrencySystem;
+using WheelOfFortune.SaveManagement;
 
 namespace WheelOfFortune.UserInterface {
 
@@ -11,9 +12,9 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private Image _currencyIcon;
         [SerializeField] private TMP_Text _amountText;
 
-        public void UpdateItem(CurrencyData currencyData)
+        public void UpdateItem(CurrencySaveData currencyData)
         {
-            _currencyIcon.sprite = currencyData.Currency.Icon;
+            _currencyIcon.sprite = currencyData.Currency.Icon; 
             _amountText.text = currencyData.CurrentAmount.ToString();
         }
     }

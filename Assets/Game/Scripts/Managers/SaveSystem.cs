@@ -1,4 +1,4 @@
- 
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,78 +6,78 @@ using UnityEngine;
 using WheelOfFortune.CurrencySystem;
 using WheelOfFortune.Utilities;
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.SaveManagement {
 
-    public static class SaveSystem { 
-        public static List<CurrencyDataSaveInfo> LoadCurrencyDatas()
+    public static class SaveSystem {
+        public static List<DataSaveInfo> LoadDatas (string dataSaveName)
         {
+            List<DataSaveInfo> allDatas = new List<DataSaveInfo>(); 
 
-            List<CurrencyDataSaveInfo> allCurrencyDatas = new List<CurrencyDataSaveInfo>();
 
-
-            if(PlayerPrefs.HasKey(Consts.SAVE_INFO_NAME_CURRENCY))
+            if(PlayerPrefs.HasKey(dataSaveName))
 
             {
-                string serializedCurrencyDatas = PlayerPrefs.GetString(Consts.SAVE_INFO_NAME_CURRENCY); 
+                string serializedDatas = PlayerPrefs.GetString(dataSaveName);
 
-                string[] deserializedCurrencyDatas = JsonConvert.DeserializeObject<string[]>(serializedCurrencyDatas) ;
-                for(int i = 0; i < deserializedCurrencyDatas.Length; i++)
+                string[] deserializedDatas = JsonConvert.DeserializeObject<string[]>(serializedDatas);
+                for(int i = 0; i < deserializedDatas.Length; i++)
                 {
-                    CurrencyDataSaveInfo currencyData = JsonUtility.FromJson<CurrencyDataSaveInfo>(deserializedCurrencyDatas[i]);
-                    allCurrencyDatas.Add(currencyData);
+                    DataSaveInfo data = JsonUtility.FromJson<DataSaveInfo>(deserializedDatas[i]);
+                    allDatas.Add(data);
                 }
 
-            } 
-            return allCurrencyDatas;
+            }
+            return allDatas;
 
-        } 
-        public static void UpdateCurrency(CurrencyData currencyData)
+        }
+
+        public static void UpdateData(AbstractSaveData data, string dataSaveName)
         {
-            List<CurrencyDataSaveInfo> allCurrencyDatas = LoadCurrencyDatas();
+            List<DataSaveInfo> allDatas = LoadDatas (dataSaveName);
             bool contains = false;
-            for(int i = 0; i < allCurrencyDatas.Count; i++)
+            for(int i = 0; i < allDatas.Count; i++)
             {
 
-                if(allCurrencyDatas[i].CurrencyName == currencyData.Currency.CurrencyName)
+                if(allDatas[i].DataId == data.DataId)
                 {
-                    allCurrencyDatas[i].UpdateAmount( currencyData.CurrentAmount) ;
+                    allDatas[i].UpdateAmount(data.CurrentAmount); 
                     contains = true;
                     break;
                 }
             }
             if(!contains)
-            { 
-                CurrencyDataSaveInfo currencyDataSaveInfo = new CurrencyDataSaveInfo(currencyData.Currency.CurrencyName, currencyData.CurrentAmount);
-                allCurrencyDatas.Add(currencyDataSaveInfo);
-            }
-
-
-            string[] allCurrencyDatasJson = new string[allCurrencyDatas.Count];
-            for(int i = 0; i < allCurrencyDatasJson.Length; i++)
             {
-                allCurrencyDatasJson[i] = JsonUtility.ToJson(allCurrencyDatas[i]); 
+                DataSaveInfo dataSaveInfo = new DataSaveInfo(data.DataId, data.CurrentAmount);
+                allDatas.Add(dataSaveInfo);
+            }
+
+
+            string[] allDatasJson = new string[allDatas.Count];
+            for(int i = 0; i < allDatasJson.Length; i++)
+            {
+                allDatasJson[i] = JsonUtility.ToJson(allDatas[i]);
 
             }
-            string serializedCurrencyDatas =  JsonConvert.SerializeObject(allCurrencyDatasJson) ; 
+            string serializedDatas = JsonConvert.SerializeObject(allDatasJson);
 
-            PlayerPrefs.SetString(Consts.SAVE_INFO_NAME_CURRENCY, serializedCurrencyDatas);
+            PlayerPrefs.SetString(dataSaveName, serializedDatas);
             PlayerPrefs.Save();
         }
     }
     [Serializable]
-    public class CurrencyDataSaveInfo
-    {
-        public CurrencyDataSaveInfo(string currencyName,int currentAmount)
+    public class
+        DataSaveInfo {
+        public DataSaveInfo(string dataId, int currentAmount)
         {
-            CurrencyName = currencyName;
+            DataId = dataId;
             CurrentAmount = currentAmount;
         }
         public void UpdateAmount(int amount)
         {
             CurrentAmount = amount;
-        } 
-        public string CurrencyName ; 
-        public  int CurrentAmount ;
+        }
+        public string DataId;
+        public int CurrentAmount;
 
     }
 }

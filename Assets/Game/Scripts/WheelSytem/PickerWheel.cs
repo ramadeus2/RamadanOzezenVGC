@@ -11,43 +11,44 @@ using WheelOfFortune.General;
 namespace WheelOfFortune.UserInterface {
 
     public class PickerWheel: MonoSingleton<PickerWheel> {
-        private Button _spinButton;
+
+        [SerializeField] private Button _spinButton;
+        [SerializeField] private Button _leaveButton;
         [SerializeField] private WheelPiece _piecePrefab;
         [SerializeField] private Image _wheel;
         [SerializeField] private Image _indicator;
-        private WheelPiece[] _wheelSegments;
-        private AddressablesManager _addressablesManager;
-        private bool _isSpinning = false;
-        private SpriteAtlas _normalRewardSpriteAtlas;
-        private SpriteAtlas _currencyRewardSpriteAtlas;
-        private StageZone _lastStageZone;
+
 
         [Header("Visualization")]
+
         [Header("Wheel")]
         [SerializeField] private Sprite _wheelIconBronze;
         [SerializeField] private Sprite _wheelIconSilver;
         [SerializeField] private Sprite _wheelIconGold;
+
         [Header("Indicator")]
         [SerializeField] private Sprite _indicatorIconBronze;
         [SerializeField] private Sprite _indicatorIconSilver;
         [SerializeField] private Sprite _indicatorIconGold;
 
+        private WheelPiece[] _wheelSegments;
+        private GameSettings _gameSettings;
+        private bool _isSpinning = false;
+        private StageZone _lastStageZone;
 
-        private void OnValidate()
-        {
-            _spinButton = GetComponentInChildren<Button>();
-        }
         private void OnEnable()
         {
-            if(_spinButton)
-            {
-                _spinButton.onClick.RemoveAllListeners();
-                _spinButton.onClick.AddListener(StartSpin);
-            }
 
-            _addressablesManager = AddressablesManager.Instance;
+            _spinButton.onClick.RemoveAllListeners();
+            _spinButton.onClick.AddListener(StartSpin);
+            _leaveButton.onClick.RemoveAllListeners();
+            _leaveButton.onClick.AddListener(CollectAndLeave);
+
+            _gameSettings = GameManager.Instance.GameSettings;
             InitializePieces();
         }
+
+
 
         private void InitializePieces()
         {
@@ -63,46 +64,39 @@ namespace WheelOfFortune.UserInterface {
                 _wheelSegments[i] = Instantiate(_piecePrefab, _wheel.transform);
                 _wheelSegments[i].transform.eulerAngles = Vector3.forward * angleOfEachPiece * i;
             }
+
         }
 
         public void UpdatePieces(List<RewardData> rewardDatas, StageZone stageZone, int rewardAmountMultiplier)
         {
             UpdateStageZoneVisual(stageZone);
-            if(!_addressablesManager)
+            if(!_gameSettings)
             {
-                _addressablesManager = AddressablesManager.Instance;
-            }
-            _addressablesManager.GetRewardAtlas((normalSpriteAtlas) =>
-            {
-                _normalRewardSpriteAtlas = normalSpriteAtlas;
+                _gameSettings = GameManager.Instance.GameSettings;
+            } 
 
-                _addressablesManager.GetRewardAtlas((currencySpriteAtlas) =>
+            for(int i = 0; i < _wheelSegments.Length; i++)
+            {
+                int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier;
+                Sprite rewardIcon = null;
+
+                if(rewardDatas[i].RewardType == RewardType.Normal)
                 {
-                    _currencyRewardSpriteAtlas = currencySpriteAtlas;
+                    rewardIcon = _gameSettings.NormalRewardAtlas.GetSprite(rewardDatas[i].SpriteName);
+                } else if(rewardDatas[i].RewardType == RewardType.Bomb)
+                {
+                    rewardIcon = GameManager.Instance.GameSettings.BombIcon;
+                    ;
+                } else
+                {
+                    rewardIcon = _gameSettings.CurrencyAtlas.GetSprite(rewardDatas[i].SpriteName);
 
+                }
 
-                    for(int i = 0; i < _wheelSegments.Length; i++)
-                    {
-                        int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier;
-                        Sprite rewardIcon = null;
+                RewardUnit rewardUnit = new RewardUnit(rewardDatas[i], rewardIcon, rewardAmount);
+                _wheelSegments[i].InitializePieceData(rewardUnit);
+            }
 
-                        if(rewardDatas[i].RewardType == RewardType.Normal)
-                        {
-                            rewardIcon = _normalRewardSpriteAtlas.GetSprite(rewardDatas[i].SpriteName);
-                        } else if(rewardDatas[i].RewardType == RewardType.Bomb)
-                        {
-                            rewardIcon = UIManager.Instance.BombIcon;
-                        } else
-                        {
-                            rewardIcon = _currencyRewardSpriteAtlas.GetSprite(rewardDatas[i].SpriteName);
-
-                        }
-
-                        RewardUnit rewardUnit = new RewardUnit(rewardDatas[i], rewardIcon, rewardAmount);
-                        _wheelSegments[i].InitializePieceData(rewardUnit);
-                    }
-                }, "CurrencySprites");
-            }, "NormalRewardSprites");
 
 
 
@@ -111,6 +105,8 @@ namespace WheelOfFortune.UserInterface {
 
         private void UpdateStageZoneVisual(StageZone stageZone)
         {
+            _leaveButton.gameObject.SetActive(stageZone != StageZone.DangerZone);
+            _leaveButton.interactable = true;
             if(_lastStageZone == stageZone)
             {
                 return;
@@ -132,13 +128,13 @@ namespace WheelOfFortune.UserInterface {
                     break;
                 default:
                     break;
-            }
+            } 
         }
 
         public void StartSpin()
         {
             if(_isSpinning) return;
-
+            _leaveButton.interactable = false;
             _isSpinning = true;
 
             float targetAngle = Random.Range(0, 360) + (360 * 5);
@@ -160,15 +156,15 @@ namespace WheelOfFortune.UserInterface {
             float snapAngle = closestSegmentIndex * segmentAngle;
             _wheel.transform.DORotate(new Vector3(0, 0, -snapAngle), 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
             {
-                WheelPiece bomb = GetBomb();
-                if(bomb)
-                {
-                    CheckThisStage(bomb);
-                } else
-                {
+                //WheelPiece bomb = GetBomb();
+                //if(bomb)
+                //{
+                //    CheckThisStage(bomb);
+                //} else
+                //{
 
-                    CheckThisStage(_wheelSegments[closestSegmentIndex]);
-                }
+                CheckThisStage(_wheelSegments[closestSegmentIndex]);
+                //}
                 _isSpinning = false;
 
             });
@@ -187,7 +183,8 @@ namespace WheelOfFortune.UserInterface {
 
         private void CheckThisStage(WheelPiece wheelPiece) =>
 
-            UIManager.Instance.CheckTheStage(wheelPiece.RewardUnit);
+            UIManager.Instance.CheckTheStage(wheelPiece.RewardUnit, _lastStageZone);
+        private void CollectAndLeave() => UIManager.Instance.CollectAndLeave();
 
 
 

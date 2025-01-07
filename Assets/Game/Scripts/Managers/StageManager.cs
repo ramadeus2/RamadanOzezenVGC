@@ -7,7 +7,9 @@ namespace WheelOfFortune.Stage {
 
     public class StageManager: MonoSingleton<StageManager> {
         [ SerializeField] private ManualStageSystem _manualStageSystem;
+       public ManualStageSystem ManualStageSystem => _manualStageSystem;
         [ SerializeField] private AutomaticStageSystem _automaticStageSystem;
+        public AutomaticStageSystem AutomaticStageSystem =>  _automaticStageSystem;
         private AbstractStageSystem _currentStageSystem;
 
         public void ActivateAutomaticStageSystem()

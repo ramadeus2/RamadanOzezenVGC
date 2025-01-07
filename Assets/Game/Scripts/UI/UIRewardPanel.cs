@@ -9,9 +9,19 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private UIRewardContent _rewardContentPrefab;
         [SerializeField] private Transform _rewardsHolder;
         private List<UIRewardContent> _rewardContents;
+        public List<UIRewardContent> RewardContents => _rewardContents;
         private void Start()
         {
             _rewardContents = new List<UIRewardContent>();
+        }
+        public void ClearRewardTable()
+        {
+            for(int i = 0; i < _rewardsHolder.childCount; i++)
+            {
+                Destroy(_rewardsHolder.GetChild(i).gameObject);
+            }
+            _rewardContents.Clear();
+
         }
         public void InitializeReward(RewardUnit rewardUnit)
         {

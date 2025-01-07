@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityEngine; 
 using WheelOfFortune.CurrencySystem;
 using WheelOfFortune.Reward;
+using WheelOfFortune.SaveManagement;
 using WheelOfFortune.Stage;
 using WheelOfFortune.Utilities;
 
@@ -15,18 +14,17 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private UICardPanel _cardPanel;
         [SerializeField] private UICurrency _uiCurrency;
         [SerializeField] private UIMainMenu _uiMainMenu;
+        
+     
 
-        private CurrencyManager _cm;
-        private StageZone _lastStageZone;
+        private CurrencyManager _cm; 
 
-        [SerializeField] private Sprite _bombIcon;
-        public Sprite BombIcon => _bombIcon;
         private void Start()
         {
             _cm = CurrencyManager.Instance;
 
         }
-        public void CheckTheStage(RewardUnit rewardUnit)
+        public void CheckTheStage(RewardUnit rewardUnit,StageZone stageZone)
         {
             bool isBomb = rewardUnit.RewardData.RewardType == Utilities.RewardType.Bomb;
             //_cardPanel.InitializePanel(rewardUnit.RewardIcon, isBomb);
@@ -35,7 +33,7 @@ namespace WheelOfFortune.UserInterface {
                 _cardPanel.VisualizeBombPanel();
             } else
             {
-                _cardPanel.VisualizeSafePanel(rewardUnit.RewardIcon);
+                _cardPanel.VisualizeSafePanel(rewardUnit.RewardIcon, stageZone);
                 _rewardPanel.InitializeReward(rewardUnit);
 
             }
@@ -43,11 +41,21 @@ namespace WheelOfFortune.UserInterface {
         public void GiveUpRewards()
         {
                 _cardPanel.ClosePanel();
+            OpenMainMenu();
+        }
+        private void OpenMainMenu()
+        {
+            StageManager sm = StageManager.Instance;
+            sm.AutomaticStageSystem.gameObject.SetActive(false);
+            sm.ManualStageSystem.gameObject.SetActive(false);
             _uiMainMenu.gameObject.SetActive(true);
+            _rewardPanel.ClearRewardTable();
+
         }
         public void RequestRevive(/*int revivePrice*/)
         {
-            if(_cm.TrySpending("Gold", 10))
+
+            if(_cm.TrySpending("99206c1c-e8ee-46a7-a462-10b478d0758b", 10))
             {
                 _cardPanel.ClosePanel();
                 SetNextStage();
@@ -58,8 +66,29 @@ namespace WheelOfFortune.UserInterface {
             StageManager.Instance.InitializeNextStage();
         }
          
-        public void InitializeCurrencyUI(List<CurrencyData> savedCurrencyDatas) => _uiCurrency.InitializeCurrencyUI(savedCurrencyDatas);
+        public void InitializeCurrencyUI(List<CurrencySaveData> savedCurrencyDatas) => _uiCurrency.InitializeCurrencyUI(savedCurrencyDatas);
         public void UpdateCurrencyUI() => _uiCurrency.UpdateCurrencyUI();
 
+        internal void CollectAndLeave()
+        {
+            List<UIRewardContent> contents = _rewardPanel.RewardContents;
+            List<DataSaveInfo> dataSaves = SaveSystem.LoadDatas(Consts.SAVE_INFO_NAME_REWARD) ;
+            for(int i = 0; i < contents.Count; i++)
+            {
+                int amount = contents[i].TotalEarnedRewardAmount;
+                for(int a = 0; a < dataSaves.Count; a++)
+                {
+                    if(contents[i].RewardDataId == dataSaves[a].DataId)
+                    {
+                        amount += dataSaves[a].CurrentAmount;
+                        break;
+                    }
+                } 
+                RewardSaveData rewardSaveData = new RewardSaveData(contents[i].RewardDataId, amount);
+                SaveSystem.UpdateData(rewardSaveData, Consts.SAVE_INFO_NAME_REWARD);
+            }
+            OpenMainMenu();
+
+        }
     }
 }

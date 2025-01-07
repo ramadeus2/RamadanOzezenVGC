@@ -11,11 +11,14 @@ namespace WheelOfFortune.Stage {
     public class AutomaticStageSystem: AbstractStageSystem  {
 
         [SerializeField] private int _stageCount;
-        [SerializeField] private RewardPool _rewardPool;
+          private RewardPool _rewardPool;
          
         public override void InitializeNextStage()
-        { 
-           
+        {
+            if(!_rewardPool)
+            {
+                _rewardPool = GameManager.Instance.GameSettings.RewardPool;
+            }  
             _currentStageNo++;
             _currentStage = ScriptableObject.CreateInstance<StageData>();
             StageZone stageZone = GetStageZone(); 

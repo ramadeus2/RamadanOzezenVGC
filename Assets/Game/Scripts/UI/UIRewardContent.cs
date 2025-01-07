@@ -14,13 +14,14 @@ public class UIRewardContent : MonoBehaviour
         private string _rewardDataId;
         public string RewardDataId => _rewardDataId;
         private int _totalEarnedReardAmount;
-        public int TotalEarnedReardAmount => _totalEarnedReardAmount;
+        public int TotalEarnedRewardAmount => _totalEarnedReardAmount;
         public void InitializeRewardContent(RewardUnit rewardUnit)
         {
             _rewardDataId = rewardUnit.RewardData.RewardId;
             _rewardImg.sprite = rewardUnit.RewardIcon; 
             ApplyRewardAmount(rewardUnit.AppliedRewardAmount);
         }
+
         public void ApplyRewardAmount(int rewardAmount)
         {
             _totalEarnedReardAmount += rewardAmount;

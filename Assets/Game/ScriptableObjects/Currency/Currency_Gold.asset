@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d6d6eb145aec94a8c67c502b8df159, type: 3}
   m_Name: Currency_Gold
   m_EditorClassIdentifier: 
-  _currencyName: Gold
+  _currencyId: 99206c1c-e8ee-46a7-a462-10b478d0758b
   _icon: {fileID: 21300000, guid: 04053f51417f4be47be91d035c672043, type: 3}
   _startAmount: 100
