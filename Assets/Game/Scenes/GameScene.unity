@@ -2314,7 +2314,7 @@ GameObject:
   - component: {fileID: 929939306}
   - component: {fileID: 929939305}
   m_Layer: 5
-  m_Name: ButtonGroupParent
+  m_Name: ButtonsHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3389,14 +3389,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e763d9fac046864fa389f4a6a271a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bombBackground: {fileID: 1470819210}
   _rewardImg: {fileID: 256824713}
   _scaledClickImg: {fileID: 1447432448}
   _giveUpButton: {fileID: 1715642335}
   _reviveButton: {fileID: 842199043}
-  _panelBackground: {fileID: 0}
-  _panelSafeColor: {r: 0, g: 0.46666667, b: 1, a: 0.21960784}
-  _panelBombColor: {r: 1, g: 0.016976064, b: 0, a: 0.21960784}
+  _buttonsHolder: {fileID: 929939303}
+  _bombBackground: {fileID: 1470819210}
   _cardBackground: {fileID: 245208958}
   _cardSafeColor: {r: 0, g: 0.28235295, b: 0.007843138, a: 1}
   _cardBombColor: {r: 0, g: 0, b: 0, a: 1}
