@@ -7,6 +7,7 @@ using WheelOfFortune.General;
 using WheelOfFortune.SaveManagement;
 using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
+using Zenject;
 
 namespace WheelOfFortune.CurrencySystem {
 
@@ -16,12 +17,15 @@ namespace WheelOfFortune.CurrencySystem {
         private GameSettings _gameSettings;
         private UIManager _uiManager;
         private void Start()
-        {
-            _uiManager = UIManager.Instance;
+        { 
             _gameSettings = GameManager.Instance.GameSettings;
             SynchronizeSavedCurrencyDatas();
         }
-
+        [Inject]
+        private void Constructor(UIManager uiManager)
+        {
+            _uiManager = uiManager;
+        }
         public void SynchronizeSavedCurrencyDatas()
         {
 

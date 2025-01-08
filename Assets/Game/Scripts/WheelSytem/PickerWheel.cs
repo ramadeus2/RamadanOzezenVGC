@@ -33,15 +33,17 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private Button _spinButton;
         [SerializeField] private Button _collectButton;
         private WheelPiece[] _wheelSegments;
+        private UIManager _uIManager;
         private GameSettings _gameSettings;
         private bool _isSpinning = false;
         private StageZone _lastStageZone;
 
         [Inject]
-        private void Constructor(SpinButton spinButton, CollectButton leaveButton)
+        private void Constructor(SpinButton spinButton, CollectButton leaveButton,UIManager uIManager)
         {
             _spinButton = spinButton.Button;
             _collectButton = leaveButton.Button;
+            _uIManager =  uIManager;
         }
 
         private void OnEnable()
@@ -84,7 +86,7 @@ namespace WheelOfFortune.UserInterface {
             }
 
             for(int i = 0; i < _wheelSegments.Length; i++)
-            {
+            { 
                 int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier;
                 Sprite rewardIcon;
 
@@ -166,15 +168,19 @@ namespace WheelOfFortune.UserInterface {
             float snapAngle = closestSegmentIndex * segmentAngle;
             _wheel.transform.DORotate(new Vector3(0, 0, -snapAngle), 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
             {
-                CheckThisStage(_wheelSegments[closestSegmentIndex]);
+                 
+                    CheckThisStage(_wheelSegments[closestSegmentIndex]);
+                 
                 _isSpinning = false;
             });
         }
 
+       
+
         private void CheckThisStage(WheelPiece wheelPiece) =>
 
-            UIManager.Instance.CheckTheStage(wheelPiece.RewardUnit, _lastStageZone);
-        private void CollectAndLeave() => UIManager.Instance.CollectAndLeave();
+           _uIManager.CheckTheStage(wheelPiece.RewardUnit, _lastStageZone);
+        private void CollectAndLeave() => _uIManager.CollectAndLeave();
 
 
 

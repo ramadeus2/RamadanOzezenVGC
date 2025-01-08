@@ -11,7 +11,7 @@ using Zenject;
 
 namespace WheelOfFortune.UserInterface {
 
-    public class UIManager: MonoSingleton<UIManager> {
+    public class UIManager: MonoBehaviour  {
         private UIRewardPanel _uiRewardPanel;
         private UICardPanel _uiCardPanel;
         private UICurrency _uiCurrency;
@@ -23,7 +23,8 @@ namespace WheelOfFortune.UserInterface {
 
         private CurrencyManager _cm;
 
-
+        private int _reviveTime;
+        private int _currentRevivePrice;
         [Inject]
         private void Constructor(UIRewardPanel uiRewardPanel, UICardPanel uiCardPanel, UICurrency uiCurrency, UIMainMenu uiMainMenu, UIStageBar uiStageBar, UIZoneInfoPanel uiZoneInfoPanel)
         {
@@ -46,6 +47,8 @@ namespace WheelOfFortune.UserInterface {
             if(isBomb)
             {
                 _uiCardPanel.VisualizeBombPanel();
+                _currentRevivePrice   = GameManager.Instance.GameSettings.GetRevivePrice(_reviveTime);
+                _uiCardPanel.InitializeReviveAmount(_currentRevivePrice);
                 ShowCurrency(true);
             }
             else
@@ -70,12 +73,12 @@ namespace WheelOfFortune.UserInterface {
             ShowCurrency(true);
 
         }
-        public bool RequestRevive(/*int revivePrice*/)
+        public bool RequestRevive( )
         {
-
-            if(_cm.TrySpending("7acca646-a0b8-4d40-b5d3-e2727ab11c7c", 10))
+            CurrencyUnit currencyUnit = GameManager.Instance.GameSettings.ReviveCurrency;
+            if(_cm.TrySpending(currencyUnit.CurrencyRewardData.RewardId, _currentRevivePrice))
             {
-                SetNextStage();
+                _reviveTime++;
                 return true;
             }
             else
@@ -107,8 +110,9 @@ namespace WheelOfFortune.UserInterface {
 
         internal void CollectAndLeave()
         {
-            CollectRewards(Consts.SAVE_INFO_NAME_REWARD, RewardType.Normal);
+            CollectRewards(Consts.SAVE_INFO_NAME_NORMAL_REWARD, RewardType.Normal);
             CollectRewards(Consts.SAVE_INFO_NAME_CURRENCY, RewardType.Currency);
+            CollectRewards(Consts.SAVE_INFO_NAME_SPECIAL, RewardType.Special);
             CurrencyManager.Instance.SynchronizeSavedCurrencyDatas();
 
             OpenMainMenu();
@@ -140,14 +144,14 @@ namespace WheelOfFortune.UserInterface {
                 switch(rewardType)
                 {
                     case RewardType.Normal:
-                        rewardSaveData = new RewardSaveData(contents[i].RewardDataId, amount);
+                        rewardSaveData = new NormalRewardSaveData(contents[i].RewardDataId, amount);
                         break;
                     case RewardType.Currency:
                         CurrencyUnit currencyUnit = GameManager.Instance.GameSettings.GetCurrencyUnit(contents[i].RewardDataId);
                         rewardSaveData = new CurrencySaveData(contents[i].RewardDataId, amount, currencyUnit);
                         break;
                     case RewardType.Special:
-
+                        rewardSaveData = new SpecialRewardSaveData(contents[i].RewardDataId, amount); 
                         break;
                     case RewardType.Bomb:
                         break;
@@ -159,9 +163,13 @@ namespace WheelOfFortune.UserInterface {
             }
         }
 
-        public void ActivateSpecialRewardPopUp() => _uiZoneInfoPanel.ActivateSpecialRewardPopUp();
-        public void InitializeSpecialRewardIcon(StageZone stageZone, int zoneTargetStageNo, Sprite icon) => _uiZoneInfoPanel.InitializeSpecialRewardIcon(stageZone, zoneTargetStageNo, icon);
+        public void ActivateSpecialRewardPopUp( ) => _uiZoneInfoPanel.ActivateSpecialRewardPopUp(  );
+        public void InitializeZoneRewardIcon(StageZone stageZone, int zoneTargetStageNo, Sprite icon) => _uiZoneInfoPanel.InitializeZoneRewardIcon(stageZone, zoneTargetStageNo, icon);
         public void InitializeStageBar(int stageCount) => _uiStageBar.InitializeStageVisual(stageCount);
 
+        internal void ResetReviveTime()
+        {
+            _reviveTime = 0;
+        }
     }
 }

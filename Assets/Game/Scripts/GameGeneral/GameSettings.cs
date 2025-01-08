@@ -29,9 +29,17 @@ namespace WheelOfFortune.General {
 
         [SerializeField] private int _stageRewardMultiplierSuperZone = 4;
         public int StageRewardMultiplierSuperZone => _stageRewardMultiplierSuperZone;
+        [SerializeField] private List<RewardData> _availableSpecialRewards;
         public List<RewardData> AvailableSpecialRewards => _availableSpecialRewards;
 
-        [SerializeField] private int _automaticStageSystemStageCount =60;
+
+        [SerializeField] private int _revivePriceMin = 10;
+        public int RevivePriceMin => _revivePriceMin;
+        [SerializeField] private int _revivePriceMax = 1000;
+        public int RevivePriceMax => _revivePriceMax;
+        [SerializeField] private int _revivePriceIncreasementMultiplier = 3;
+        public int RevivePriceIncreasementMultiplier => _revivePriceIncreasementMultiplier;
+
 
         [SerializeField] private SpriteAtlas _normalRewardAtlas;
         public SpriteAtlas NormalRewardAtlas => _normalRewardAtlas;
@@ -61,8 +69,11 @@ namespace WheelOfFortune.General {
         public StagePool StagePool => _stagePool;
 
 
-        [SerializeField] private List<RewardData> _availableSpecialRewards;
-        public int AutomaticStageSystemStageCount=> _automaticStageSystemStageCount;
+        [SerializeField] private int _automaticStageSystemStageCount = 60;
+        public int AutomaticStageSystemStageCount => _automaticStageSystemStageCount;
+        [SerializeField] private CurrencyUnit _reviveCurrency;
+        public CurrencyUnit ReviveCurrency => _reviveCurrency;
+
         public bool TryGetZoneRewardData(int _currentStageNo, StageZone stageZone, out int zoneRewardStageNo, out RewardData specialReward)
         {
             int threshold = 0;
@@ -71,18 +82,18 @@ namespace WheelOfFortune.General {
                 case StageZone.DangerZone:
                     break;
                 case StageZone.SafeZone:
-                threshold = StageSafeZoneThreshold;
+                    threshold = StageSafeZoneThreshold;
                     break;
                 case StageZone.SuperZone:
-                threshold = StageSuperZoneThreshold;
+                    threshold = StageSuperZoneThreshold;
                     break;
                 default:
                     break;
             }
-            
+
             int zoneRewardIndex = Mathf.RoundToInt(_currentStageNo / threshold);
-            zoneRewardStageNo = (zoneRewardIndex+1) * threshold; 
-            if(stageZone == StageZone.SuperZone )
+            zoneRewardStageNo = (zoneRewardIndex + 1) * threshold;
+            if(stageZone == StageZone.SuperZone)
             {
                 if(AvailableSpecialRewards.Count > zoneRewardIndex)
                 {
@@ -93,6 +104,25 @@ namespace WheelOfFortune.General {
             }
             specialReward = null;
             return false;
+        }
+        public int GetRevivePrice(int reviveTime)
+        {
+            int price = _revivePriceMin; 
+            if(reviveTime > 0)
+            {
+                for(int i = 0; i < reviveTime; i++)
+                {
+                    price *= _revivePriceIncreasementMultiplier;
+                }
+
+            
+            }
+            if(price> _revivePriceMax)
+            {
+                price = _revivePriceMax;
+            } 
+            return price;
+
         }
         public Sprite GetRewardSprite(string name)
         {

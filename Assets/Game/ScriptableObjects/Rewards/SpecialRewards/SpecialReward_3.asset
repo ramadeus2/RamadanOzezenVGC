@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: SpecialReward_3
   m_EditorClassIdentifier: 
-  _rewardId: 
-  _rewardName: 
-  _minAmount: 5
-  _maxAmount: 15
+  _rewardId: 36b3706a-bbb7-4f91-8100-a1ef785cac63
+  _rewardName: SpecialReward_3
+  _minAmount: 1
+  _maxAmount: 1
   _probability: 100
   _rewardType: 2
-  _spriteName: 
-  _icon: {fileID: 0}
+  _spriteName: UI_icon_chest_gold_nolight
   selectedSpriteIndex: 2

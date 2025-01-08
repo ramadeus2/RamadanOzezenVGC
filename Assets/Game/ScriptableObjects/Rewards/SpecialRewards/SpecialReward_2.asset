@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: SpecialReward_2
   m_EditorClassIdentifier: 
-  _rewardId: 
-  _rewardName: 
-  _minAmount: 5
-  _maxAmount: 15
+  _rewardId: 39bdaf99-5df8-4090-b0d6-4670fbf0bc07
+  _rewardName: SpecialReward_2
+  _minAmount: 1
+  _maxAmount: 1
   _probability: 100
   _rewardType: 2
-  _spriteName: 
-  _icon: {fileID: 0}
+  _spriteName: ui_icon_mle_bayonet_easter_time
   selectedSpriteIndex: 1

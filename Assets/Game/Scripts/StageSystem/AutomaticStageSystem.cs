@@ -22,7 +22,10 @@ namespace WheelOfFortune.Stage {
         {
             return _gameSettings.RewardPool.GetRandomRewards(_stageCount, stageZone);
         }
-
+            protected override void RunStage(List<RewardData> rewardDatas, int stageNo, StageZone stageZone)
+        {
+            _currentStage.RunStage(rewardDatas, stageNo, stageZone);
+        }
          
 
     }

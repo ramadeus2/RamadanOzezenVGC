@@ -4,7 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WheelOfFortune.Reward;
+using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
+using Zenject;
 
 namespace WheelOfFortune {
 
@@ -17,7 +20,10 @@ namespace WheelOfFortune {
         [SerializeField] private Vector2 _popupTargetPos = new Vector2(0, 350);
         private UIZoneInfoContent _superZoneInfoContent;
         private UIZoneInfoContent _safeZoneInfoContent;
-        public void InitializeSpecialRewardIcon(StageZone stageZone, int zoneTargetStageNo, Sprite icon)
+       
+
+
+        public void InitializeZoneRewardIcon(StageZone stageZone, int zoneTargetStageNo, Sprite icon)
         {
             UIZoneInfoContent uIZoneInfoContent = null;
             string zoneName = "";
@@ -55,12 +61,12 @@ namespace WheelOfFortune {
 
         public void ActivateSpecialRewardPopUp()
         {
-            
+          
             _specialRewardPopupImage.sprite = _superZoneInfoContent.ZoneIcon.sprite; 
-            Helpers.AnimateUIObjectMove(_specialRewardPopup, _popupStartPos, _popupTargetPos,duration:.3f, isBoumerang: true, Ease.OutBack, delay: 2, (() =>
+            Helpers.AnimateUIObjectMove(_specialRewardPopup, _popupStartPos, _popupTargetPos,duration:.3f, isBoumerang: true, Ease.OutBack, delay: 2,  () =>
             { 
                     _specialRewardPopup.gameObject.SetActive(false); 
-            }));
+            } );
           
         }
 

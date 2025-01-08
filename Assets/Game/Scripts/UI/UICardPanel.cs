@@ -27,30 +27,32 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private Vector2 _cardPopupStartPos = new Vector2(0, 0);
         [SerializeField] private Vector2 _cardPopupTargetPos = new Vector2(0, 0);
 
-
+        private UIManager _uiManager;
        private Button _giveUpButton;
-       private Button _reviveButton;
+       private ReviveButton _reviveButton;
         private bool _skipClicked;
+
         [Inject]
-        private void Constructor(ReviveButton revive, GiveUpButton giveUpButton )
+        private void Constructor(ReviveButton reviveButton, GiveUpButton giveUpButton,UIManager uIManager )
         {
-            _reviveButton = revive.Button;
-            _giveUpButton = giveUpButton.Button; 
+            _reviveButton = reviveButton;
+            _giveUpButton = giveUpButton.Button;
+            _uiManager = uIManager;
         }
         private void OnEnable()
         {
-            _reviveButton.onClick.AddListener(RequestRevive);
+            _reviveButton.Button.onClick.RemoveAllListeners();
+            _reviveButton.Button.onClick.AddListener(RequestRevive);
+            _giveUpButton.onClick.RemoveAllListeners();
             _giveUpButton.onClick.AddListener(GiveUpRewards);
-        }
-
-
-
-        private void OnDisable()
+        } 
+        public void InitializeReviveAmount(int price)
         {
-            _reviveButton.onClick.RemoveListener(RequestRevive);
-            _giveUpButton.onClick.RemoveListener(GiveUpRewards);
-        }
+           
 
+            string text = "Revive x" + price;
+            _reviveButton.ButtonText.text = text;
+        }
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -80,7 +82,7 @@ namespace WheelOfFortune.UserInterface {
         public void VisualizeBombPanel()
         {
             gameObject.SetActive(true); 
-            _reviveButton.gameObject.SetActive(true);
+            _reviveButton.gameObject.SetActive(true); 
             _giveUpButton.gameObject.SetActive(true);
             _cardBackground.color = _cardBombColor;
             _bombBackground.gameObject.SetActive(true);
@@ -105,7 +107,7 @@ namespace WheelOfFortune.UserInterface {
         {
             Helpers.AnimateUIObjectMove(_cardBackground.rectTransform, _cardPopupTargetPos, _cardPopupStartPos, duration: .3f, isBoumerang: false, Ease.InBack, delay: 0, () =>
             {
-                UIManager.Instance.GiveUpRewards();
+               _uiManager.GiveUpRewards();
                 Helpers.AnimateUIObjectFade(_bombBackground, 1.0f, 0.0f, 0.3f, false);
 
             });
@@ -113,7 +115,7 @@ namespace WheelOfFortune.UserInterface {
         private void RequestRevive()
 
         {
-            if(UIManager.Instance.RequestRevive())
+            if(_uiManager.RequestRevive())
             {
                 Helpers.AnimateUIObjectMove(_cardBackground.rectTransform, _cardPopupTargetPos, _cardPopupStartPos, duration: .3f, isBoumerang: false, Ease.InBack, delay: 0, () =>
                 {
@@ -125,14 +127,14 @@ namespace WheelOfFortune.UserInterface {
             }
             else
             {
-                _reviveButton.interactable = false;
-                _reviveButton.image.rectTransform.DOShakeAnchorPos(.3f, 10, 25).OnComplete(() =>
+                _reviveButton.Button.interactable = false;
+                _reviveButton.Button.image.rectTransform.DOShakeAnchorPos(.3f, 10, 25).OnComplete(() =>
                 {
-                    _reviveButton.interactable = true;
+                    _reviveButton.Button.interactable = true;
                 });
             }
 
         }
-        private void RewardApproved() => UIManager.Instance.SetNextStage();
+        private void RewardApproved() => _uiManager.SetNextStage();
     }
 }
