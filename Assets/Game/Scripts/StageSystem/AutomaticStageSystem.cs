@@ -12,7 +12,11 @@ namespace WheelOfFortune.Stage {
 
         [SerializeField] private int _stageCount;
           private RewardPool _rewardPool;
-         
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            UIManager.Instance.InitializeStageBar(_stageCount); 
+        }
         public override void InitializeNextStage()
         {
             if(!_rewardPool)
@@ -21,7 +25,7 @@ namespace WheelOfFortune.Stage {
             }  
             _currentStageNo++;
             _currentStage = ScriptableObject.CreateInstance<StageData>();
-            StageZone stageZone = GetStageZone(); 
+            StageZone stageZone = Helpers.GetStageZone(_currentStageNo); 
             List<RewardData> rewardDatas = InitializeRewardsForThisStage(stageZone); 
             _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone); 
 

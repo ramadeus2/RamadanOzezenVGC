@@ -14,8 +14,9 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private UICardPanel _cardPanel;
         [SerializeField] private UICurrency _uiCurrency;
         [SerializeField] private UIMainMenu _uiMainMenu;
-        
-     
+        [SerializeField] private UIStageBar _uiStageBar;
+
+
 
         private CurrencyManager _cm; 
 
@@ -26,11 +27,12 @@ namespace WheelOfFortune.UserInterface {
         }
         public void CheckTheStage(RewardUnit rewardUnit,StageZone stageZone)
         {
-            bool isBomb = rewardUnit.RewardData.RewardType == Utilities.RewardType.Bomb;
+            bool isBomb = rewardUnit.RewardData.RewardType == RewardType.Bomb;
             //_cardPanel.InitializePanel(rewardUnit.RewardIcon, isBomb);
             if(isBomb)
             {
                 _cardPanel.VisualizeBombPanel();
+                ShowCurrency(true);
             } else
             {
                 _cardPanel.VisualizeSafePanel(rewardUnit.RewardIcon, stageZone);
@@ -50,6 +52,7 @@ namespace WheelOfFortune.UserInterface {
             sm.ManualStageSystem.gameObject.SetActive(false);
             _uiMainMenu.gameObject.SetActive(true);
             _rewardPanel.ClearRewardTable();
+            ShowCurrency(true);
 
         }
         public void RequestRevive(/*int revivePrice*/)
@@ -63,9 +66,15 @@ namespace WheelOfFortune.UserInterface {
         }
         public void SetNextStage()
         {
+            ShowCurrency(false);
             StageManager.Instance.InitializeNextStage();
+          _uiStageBar.SetNextStage();
         }
-         
+        public void ShowCurrency(bool activation)
+        {
+            _uiCurrency.gameObject.SetActive(activation);
+
+        }
         public void InitializeCurrencyUI(List<CurrencySaveData> savedCurrencyDatas) => _uiCurrency.InitializeCurrencyUI(savedCurrencyDatas);
         public void UpdateCurrencyUI() => _uiCurrency.UpdateCurrencyUI();
 
@@ -90,5 +99,8 @@ namespace WheelOfFortune.UserInterface {
             OpenMainMenu();
 
         }
+
+        public void InitializeStageBar(int stageCount)=> _uiStageBar.InitializeStageVisual(stageCount);
+
     }
 }

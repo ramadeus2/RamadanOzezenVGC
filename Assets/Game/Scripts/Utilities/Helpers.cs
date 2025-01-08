@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WheelOfFortune.General;
 
 namespace WheelOfFortune.Utilities {
 
@@ -22,6 +23,18 @@ public class Helpers : MonoBehaviour
                 indexOrders[index] = temp;
             }
             return indexOrders;
+        }
+        public static StageZone GetStageZone(int _currentStageNo)
+        {
+            StageZone stageZone = StageZone.DangerZone;
+            if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSuperZoneMultiplier == 0)
+            {
+                stageZone = StageZone.SuperZone;
+            } else if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSafeZoneMultiplier == 0)
+            {
+                stageZone = StageZone.SafeZone;
+            }
+            return stageZone;
         }
 
     }

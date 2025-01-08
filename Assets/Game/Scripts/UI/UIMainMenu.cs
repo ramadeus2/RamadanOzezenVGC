@@ -36,11 +36,14 @@ namespace WheelOfFortune.UserInterface {
         private void ActivateAutomaticStage()
         {
             StageManager.Instance.ActivateAutomaticStageSystem();
+            UIManager.Instance.ShowCurrency(false);
             gameObject.SetActive(false);
+            
         }
         private void ActivateManualStage()
         {
             StageManager.Instance.ActivateManualStageSystem();
+            UIManager.Instance.ShowCurrency(false);
             gameObject.SetActive(false);
         }
 

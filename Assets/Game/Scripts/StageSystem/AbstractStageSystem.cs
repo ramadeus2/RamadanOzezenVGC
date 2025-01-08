@@ -13,6 +13,7 @@ namespace WheelOfFortune.Stage {
         protected StageData _currentStage;  
         protected virtual void OnEnable()
         {
+
             InitializeNextStage();
         }
 
@@ -23,18 +24,7 @@ namespace WheelOfFortune.Stage {
         }
      
        
-        protected StageZone GetStageZone()
-        { 
-            StageZone stageZone = StageZone.DangerZone;
-            if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSuperZoneMultiplier == 0)
-            {
-                stageZone = StageZone.SuperZone;
-            } else if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSafeZoneMultiplier == 0)
-            {
-                stageZone = StageZone.SafeZone;
-            }
-            return stageZone;
-        }
+       
         
         public abstract void InitializeNextStage();
     }
