@@ -54,7 +54,7 @@ namespace WheelOfFortune.UserInterface {
         {
             if(_wheelSegments == null)
             {
-                int length = GameManager.Instance.GameSettings.StageRewardAmount;
+                int length = GameManager.Instance.GameSettings.StageRewardUnitAmount;
                 _wheelSegments = new WheelPiece[length];
             }
             float angleOfEachPiece = 360f / _wheelSegments.Length;
@@ -78,7 +78,7 @@ namespace WheelOfFortune.UserInterface {
             for(int i = 0; i < _wheelSegments.Length; i++)
             {
                 int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier;
-                Sprite rewardIcon = null;
+                Sprite rewardIcon;
 
                 if(rewardDatas[i].RewardType == RewardType.Normal)
                 {

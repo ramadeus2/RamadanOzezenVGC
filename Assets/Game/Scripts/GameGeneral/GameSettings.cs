@@ -5,26 +5,32 @@ using UnityEngine.U2D;
 using WheelOfFortune.CurrencySystem;
 using WheelOfFortune.Reward;
 using WheelOfFortune.Stage;
+using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.General {
 
     [CreateAssetMenu(fileName = "NewGameSettings", menuName = "WheelOfFortune/General/GameSettings")]
     public class GameSettings: ScriptableObject {
-        [SerializeField] private int _stageSuperZoneMultiplier = 30;
-        public int StageSuperZoneMultiplier => _stageSuperZoneMultiplier;
+        [SerializeField] private int _stageSuperZoneThreshold = 30;
+        public int StageSuperZoneThreshold => _stageSuperZoneThreshold;
 
 
-        [SerializeField] private int _stageSafeZoneMultiplier = 5;
-        public int StageSafeZoneMultiplier => _stageSafeZoneMultiplier;
+        [SerializeField] private int _stageSafeZoneThreshold = 5;
+        public int StageSafeZoneThreshold => _stageSafeZoneThreshold;
 
 
-        [SerializeField] private int _stageRewardAmount = 8;
-        public int StageRewardAmount => _stageRewardAmount;
+        [SerializeField] private int _stageRewardUnitAmount = 8;
+        public int StageRewardUnitAmount => _stageRewardUnitAmount;
 
+        [SerializeField] private int _stageRewardMultiplierSafeZone = 2;
+        public int StageRewardMultiplierSafeZone => _stageRewardMultiplierSafeZone;
+
+        [SerializeField] private int _stageRewardMultiplierSuperZone = 4;
+        public int StageRewardMultiplierSuperZone => _stageRewardMultiplierSuperZone;
 
         [SerializeField] private SpriteAtlas _normalRewardAtlas;
-        public SpriteAtlas NormalRewardAtlas =>_normalRewardAtlas;
+        public SpriteAtlas NormalRewardAtlas => _normalRewardAtlas;
 
 
         [SerializeField] private SpriteAtlas _specialRewardAtlas;
@@ -33,13 +39,13 @@ namespace WheelOfFortune.General {
 
 
         [SerializeField] private SpriteAtlas _currencyAtlas;
-        public SpriteAtlas CurrencyAtlas=>_currencyAtlas;
+        public SpriteAtlas CurrencyAtlas => _currencyAtlas;
 
         [SerializeField] private Sprite _bombIcon;
         public Sprite BombIcon => _bombIcon;
 
         [SerializeField] private CurrencySettings _currencySettings;
-        public CurrencySettings CurrencySettings=>_currencySettings;
+        public CurrencySettings CurrencySettings => _currencySettings;
 
 
         [SerializeField] private RewardPool _rewardPool;
@@ -49,6 +55,24 @@ namespace WheelOfFortune.General {
         [SerializeField] private StagePool _stagePool;
         public StagePool StagePool => _stagePool;
 
+
+        [SerializeField] private List<RewardData> _availableSpecialRewards;
+        public List<RewardData> AvailableSpecialRewards => _availableSpecialRewards;
+        public bool TryGetSpecialRewardData(int _currentStageNo, out RewardData specialReward)
+        {
+            int specialRewardIndex = Mathf.RoundToInt(_currentStageNo / StageSuperZoneThreshold); 
+            if((float)_currentStageNo % StageSuperZoneThreshold == 1)
+            { 
+                if(AvailableSpecialRewards.Count > specialRewardIndex)
+                {
+                    specialReward = AvailableSpecialRewards[specialRewardIndex];
+                    return true;
+                }
+
+            }
+            specialReward = null;
+            return false;
+        }
         public Sprite GetRewardSprite(string name)
         {
             Sprite rewardIcon;
@@ -56,10 +80,12 @@ namespace WheelOfFortune.General {
             if(GetRewardSprite(name, RewardType.Normal, out rewardIcon))
             {
                 return rewardIcon;
-            } else if(GetRewardSprite(name, RewardType.Special, out rewardIcon))
+            }
+            else if(GetRewardSprite(name, RewardType.Special, out rewardIcon))
             {
                 return rewardIcon;
-            } else if(GetRewardSprite(name, RewardType.Currency, out rewardIcon))
+            }
+            else if(GetRewardSprite(name, RewardType.Currency, out rewardIcon))
             {
                 return rewardIcon;
             }
@@ -68,7 +94,7 @@ namespace WheelOfFortune.General {
         }
         public bool GetRewardSprite(string name, RewardType rewardType, out Sprite rewardIcon)
         {
-            SpriteAtlas atlas = null; 
+            SpriteAtlas atlas = null;
             switch(rewardType)
             {
                 case RewardType.Normal:
@@ -78,7 +104,7 @@ namespace WheelOfFortune.General {
                     atlas = _currencyAtlas;
                     break;
                 case RewardType.Special:
-                    atlas = _specialRewardAtlas;
+                    atlas = _specialRewardAtlas; 
                     break;
                 case RewardType.Bomb:
                     rewardIcon = _bombIcon;
@@ -86,7 +112,8 @@ namespace WheelOfFortune.General {
                 default:
                     break;
             }
-            rewardIcon = atlas.GetSprite(name);
+            
+            rewardIcon = atlas.GetSprite(name); 
             return rewardIcon;
         }
 

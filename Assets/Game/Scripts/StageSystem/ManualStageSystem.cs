@@ -9,30 +9,15 @@ using WheelOfFortune.Utilities;
 namespace WheelOfFortune.Stage {
 
 public class ManualStageSystem : AbstractStageSystem
-{
-       private StagePool _stagePool;
-     
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            UIManager.Instance.InitializeStageBar(_stagePool.StageDatas.Count);
+{ 
+        protected override void SetCurrentStage()
+        { 
+            _currentStage = _gameSettings.StagePool.StageDatas[_currentStageNo];  
         }
-        public override void InitializeNextStage()
+        protected override List<RewardData> GetRewardList(StageZone stageZone)
         {
-            if(!_stagePool)
-            {
-                _stagePool = GameManager.Instance.GameSettings.StagePool;
-            }
-            _currentStageNo++;
-            if(_currentStageNo>= _stagePool.StageDatas.Count)
-            { 
-                return;
-            }
-            _currentStage = _stagePool.StageDatas[_currentStageNo];
-            StageZone stageZone =Helpers. GetStageZone(_currentStageNo);
-            List<RewardData> rewardDatas =_currentStage.RewardDatas;
-            _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone);
-      
+            _currentStage = _gameSettings.StagePool.StageDatas[_currentStageNo];
+            return _currentStage.RewardDatas;
 
         }
 

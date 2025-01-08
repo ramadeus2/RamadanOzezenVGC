@@ -71,7 +71,7 @@ namespace WheelOfFortune.Stage {
             _stagePool.StageDatas.Add(newStage);
             int stageNo = _stagePool.StageDatas.Count;
             StageZone stageZone = Helpers.GetStageZone(stageNo, gameSettings); 
-            List<RewardData> rewardDatas = gameSettings.RewardPool.GetRandomRewards(gameSettings.StageRewardAmount, Helpers.GetStageZone(stageNo, gameSettings)); 
+            List<RewardData> rewardDatas = gameSettings.RewardPool.GetRandomRewards(gameSettings.StageRewardUnitAmount, Helpers.GetStageZone(stageNo, gameSettings)); 
             newStage.InitializeStageData(stageNo, stageZone, rewardDatas);
             ArrayUtility.Add(ref _stageFoldouts, true);
 

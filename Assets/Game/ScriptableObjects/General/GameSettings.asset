@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b04141e8e96d5b47819ff826be385b2, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  _stageSuperZoneMultiplier: 30
-  _stageSafeZoneMultiplier: 5
-  _stageRewardAmount: 8
+  _stageSuperZoneThreshold: 3
+  _stageSafeZoneThreshold: 5
+  _stageRewardUnitAmount: 8
+  _stageRewardMultiplierSafeZone: 2
+  _stageRewardMultiplierSuperZone: 4
   _normalRewardAtlas: {fileID: 4343727234628468602, guid: 4311b6ec4ad9d034fa853940a97543e9, type: 2}
   _specialRewardAtlas: {fileID: 4343727234628468602, guid: 0aef12e7eb7aa674891c89d067dc6797, type: 2}
   _currencyAtlas: {fileID: 4343727234628468602, guid: 92877a0f83095824e86cdc4390cb2a0e, type: 2}
@@ -22,3 +24,7 @@ MonoBehaviour:
   _currencySettings: {fileID: 11400000, guid: 2f190b379356d00409cb14710db1905d, type: 2}
   _rewardPool: {fileID: 11400000, guid: 228b8e8d2c73ec545aa0d66e23679361, type: 2}
   _stagePool: {fileID: 11400000, guid: 84a01bebc0a2f364b88c647b7ca7608d, type: 2}
+  _availableSpecialRewards:
+  - {fileID: 11400000, guid: 1efc95497321d78438b86d3339d09a93, type: 2}
+  - {fileID: 11400000, guid: 9345f265fe0fc1c429661bb1ef034cea, type: 2}
+  - {fileID: 11400000, guid: 80d4c767f445f3143bd18eb120e07193, type: 2}

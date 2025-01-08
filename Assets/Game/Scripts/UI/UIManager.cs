@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
 using WheelOfFortune.CurrencySystem;
 using WheelOfFortune.Reward;
 using WheelOfFortune.SaveManagement;
@@ -15,17 +15,18 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private UICurrency _uiCurrency;
         [SerializeField] private UIMainMenu _uiMainMenu;
         [SerializeField] private UIStageBar _uiStageBar;
+        [SerializeField] private UISpecialReward _uISpecialReward;
 
 
 
-        private CurrencyManager _cm; 
+        private CurrencyManager _cm;
 
         private void Start()
         {
             _cm = CurrencyManager.Instance;
 
         }
-        public void CheckTheStage(RewardUnit rewardUnit,StageZone stageZone)
+        public void CheckTheStage(RewardUnit rewardUnit, StageZone stageZone)
         {
             bool isBomb = rewardUnit.RewardData.RewardType == RewardType.Bomb;
             //_cardPanel.InitializePanel(rewardUnit.RewardIcon, isBomb);
@@ -33,7 +34,8 @@ namespace WheelOfFortune.UserInterface {
             {
                 _cardPanel.VisualizeBombPanel();
                 ShowCurrency(true);
-            } else
+            }
+            else
             {
                 _cardPanel.VisualizeSafePanel(rewardUnit.RewardIcon, stageZone);
                 _rewardPanel.InitializeReward(rewardUnit);
@@ -42,7 +44,7 @@ namespace WheelOfFortune.UserInterface {
         }
         public void GiveUpRewards()
         {
-                _cardPanel.ClosePanel();
+            _cardPanel.ClosePanel();
             OpenMainMenu();
         }
         private void OpenMainMenu()
@@ -68,7 +70,9 @@ namespace WheelOfFortune.UserInterface {
         {
             ShowCurrency(false);
             StageManager.Instance.InitializeNextStage();
-          _uiStageBar.SetNextStage();
+            _uiStageBar.SetNextStage();
+
+
         }
         public void ShowCurrency(bool activation)
         {
@@ -81,7 +85,7 @@ namespace WheelOfFortune.UserInterface {
         internal void CollectAndLeave()
         {
             List<UIRewardContent> contents = _rewardPanel.RewardContents;
-            List<DataSaveInfo> dataSaves = SaveSystem.LoadDatas(Consts.SAVE_INFO_NAME_REWARD) ;
+            List<DataSaveInfo> dataSaves = SaveSystem.LoadDatas(Consts.SAVE_INFO_NAME_REWARD);
             for(int i = 0; i < contents.Count; i++)
             {
                 int amount = contents[i].TotalEarnedRewardAmount;
@@ -92,7 +96,7 @@ namespace WheelOfFortune.UserInterface {
                         amount += dataSaves[a].CurrentAmount;
                         break;
                     }
-                } 
+                }
                 RewardSaveData rewardSaveData = new RewardSaveData(contents[i].RewardDataId, amount);
                 SaveSystem.UpdateData(rewardSaveData, Consts.SAVE_INFO_NAME_REWARD);
             }
@@ -100,7 +104,9 @@ namespace WheelOfFortune.UserInterface {
 
         }
 
-        public void InitializeStageBar(int stageCount)=> _uiStageBar.InitializeStageVisual(stageCount);
+        public void ActivateSpecialRewardPopUp( ) => _uISpecialReward.ActivateSpecialRewardPopUp( );
+        public void InitializeSpecialRewardIcon(Sprite icon) => _uISpecialReward.InitializeSpecialRewardIcon(icon);
+        public void InitializeStageBar(int stageCount) => _uiStageBar.InitializeStageVisual(stageCount);
 
     }
 }

@@ -11,6 +11,7 @@ namespace WheelOfFortune.Stage {
     public class StageData: ScriptableObject {
         [SerializeField] private List<RewardData> _rewardDatas;
         public List<RewardData> RewardDatas => _rewardDatas;
+         
 
         [SerializeField] private int _stageNo;
         public int StageNo => _stageNo;
@@ -19,15 +20,16 @@ namespace WheelOfFortune.Stage {
         public StageZone StageZone => _stageZone;
 
         public void RunStage()
-        { 
+        {
+            GameSettings gameSettings = GameManager.Instance.GameSettings;
             int rewardAmountMultiplier = 1;
             switch(_stageZone)
             {
                 case StageZone.SafeZone:
-                    rewardAmountMultiplier = 2;
+                    rewardAmountMultiplier = gameSettings.StageRewardMultiplierSafeZone;
                     break;
                 case StageZone.SuperZone:
-                    rewardAmountMultiplier = 4;
+                    rewardAmountMultiplier = gameSettings.StageRewardMultiplierSuperZone;
                     break;
                 default:
                     break;

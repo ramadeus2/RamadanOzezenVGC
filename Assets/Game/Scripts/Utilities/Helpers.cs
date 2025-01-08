@@ -27,10 +27,10 @@ public class Helpers : MonoBehaviour
         public static StageZone GetStageZone(int _currentStageNo)
         {
             StageZone stageZone = StageZone.DangerZone;
-            if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSuperZoneMultiplier == 0)
+            if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSuperZoneThreshold == 0)
             {
                 stageZone = StageZone.SuperZone;
-            } else if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSafeZoneMultiplier == 0)
+            } else if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSafeZoneThreshold == 0)
             {
                 stageZone = StageZone.SafeZone;
             }
@@ -39,10 +39,10 @@ public class Helpers : MonoBehaviour
         public static StageZone GetStageZone(int stageNo, GameSettings gameSettings)
         {
             StageZone stageZone = StageZone.DangerZone;
-            if(stageNo != 0 && stageNo % gameSettings.StageSuperZoneMultiplier == 0)
+            if(stageNo != 0 && stageNo % gameSettings.StageSuperZoneThreshold == 0)
             {
                 stageZone = StageZone.SuperZone;
-            } else if(stageNo != 0 && stageNo % gameSettings.StageSafeZoneMultiplier == 0)
+            } else if(stageNo != 0 && stageNo % gameSettings.StageSafeZoneThreshold == 0)
             {
                 stageZone = StageZone.SafeZone;
             }

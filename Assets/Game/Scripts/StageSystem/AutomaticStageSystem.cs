@@ -8,35 +8,19 @@ using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Stage {
 
-    public class AutomaticStageSystem: AbstractStageSystem  {
+    public class AutomaticStageSystem: AbstractStageSystem {
 
-        [SerializeField] private int _stageCount;
-          private RewardPool _rewardPool;
-        protected override void OnEnable()
+     
+        protected override void SetCurrentStage()
         {
-            base.OnEnable();
-            UIManager.Instance.InitializeStageBar(_stageCount); 
+            _currentStage = ScriptableObject.CreateInstance<StageData>(); 
         }
-        public override void InitializeNextStage()
+        protected override List<RewardData> GetRewardList(StageZone stageZone)
         {
-            if(!_rewardPool)
-            {
-                _rewardPool = GameManager.Instance.GameSettings.RewardPool;
-            }  
-            _currentStageNo++;
-            _currentStage = ScriptableObject.CreateInstance<StageData>();
-            StageZone stageZone = Helpers.GetStageZone(_currentStageNo); 
-            List<RewardData> rewardDatas = InitializeRewardsForThisStage(stageZone); 
-            _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone); 
-
+            return _gameSettings.RewardPool.GetRandomRewards(_stageCount, stageZone);
         }
-       
-        private List<RewardData> InitializeRewardsForThisStage(StageZone stageZone)
-        {
 
-            return _rewardPool.GetRandomRewards(_stageCount, stageZone );
+         
 
-        }
-       
     }
 }
