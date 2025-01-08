@@ -9,10 +9,11 @@ namespace WheelOfFortune {
 
 public class UIZoneInfoContent : MonoBehaviour
 {
-        [SerializeField] TMP_Text _zoneNameText;
-        [SerializeField] TMP_Text _zoneTargetStageNoText;
-        [SerializeField] Image _zoneBackground;
-        [SerializeField] Image _zoneIcon;
+        [SerializeField] private TMP_Text _zoneNameText;
+        [SerializeField] private TMP_Text _zoneTargetStageNoText;
+        [SerializeField] private Image _zoneBackground;
+        [SerializeField] private Image _zoneIcon;
+        [SerializeField] public Image ZoneIcon => _zoneIcon;
         public void InitializeUIZoneInfo(string zoneName,int zoneTargetStageNo,Sprite zoneIcon,Color bgColor)
         {
             _zoneNameText.text = zoneName;

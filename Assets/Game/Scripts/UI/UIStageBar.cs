@@ -2,7 +2,6 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using WheelOfFortune.Utilities;
@@ -23,7 +22,8 @@ namespace WheelOfFortune.UserInterface {
         public void InitializeStageVisual(int stageCount)
         {
             DestroyOldStageBarDatas();
-            _stageBars = new List<UIStageBarContent>();
+            _currentStageIndex = 0;
+            _stageBars = new List<UIStageBarContent>(); 
             for(int i = 0; i < stageCount; i++)
             {
                 UIStageBarContent stageBar = Instantiate(_contentPrefab, _imageHolder);
@@ -68,7 +68,7 @@ namespace WheelOfFortune.UserInterface {
         }
         private IEnumerator AnimateAfterFrame()
         {
-            yield return null;
+            yield return null; 
             Animate();
         }
         public void SetNextStage()
@@ -83,7 +83,10 @@ namespace WheelOfFortune.UserInterface {
             {
                 _stageBars[_currentStageIndex - 1].ChangeTextColorForCurrentZone(false);
             }
+            if(_currentStageIndex<_stageBars.Count)
+            {
             _stageBars[_currentStageIndex].ChangeTextColorForCurrentZone(true);
+            }
         }
 
     }

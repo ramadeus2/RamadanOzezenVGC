@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,19 +11,24 @@ using WheelOfFortune.Utilities;
 namespace WheelOfFortune.Stage {
 
     public abstract class AbstractStageSystem: MonoBehaviour {
-        [SerializeField] protected int _stageCount;
+        protected int _stageCount;
         protected GameSettings _gameSettings;
         protected StageData _currentStage;
         protected int _currentStageNo = 0;
 
         protected virtual void OnEnable()
         {
-
+            if(!_gameSettings)
+            {
+                _gameSettings = GameManager.Instance.GameSettings;
+            }
+            SetStageCount();
             InitializeNextStage();
             UIManager.Instance.InitializeStageBar(_stageCount);
 
         }
 
+     
         protected virtual void OnDisable()
         {
             _currentStage = null;
@@ -32,18 +38,18 @@ namespace WheelOfFortune.Stage {
 
 
 
-        public virtual void InitializeNextStage()
-        {
-            if(!_gameSettings)
-            {
-                _gameSettings = GameManager.Instance.GameSettings;
-            }
+        public virtual bool InitializeNextStage()
+        { 
             if(_currentStageNo >= _stageCount)
             {
-                return;
+                return false;
             }
             _currentStageNo++;
             StageZone stageZone = Helpers.GetStageZone(_currentStageNo);
+            if(stageZone == StageZone.SuperZone)
+            {
+                UIManager.Instance.ActivateSpecialRewardPopUp();
+            }
             SetCurrentStage();
 
             UpdateZoneRewardIcon(stageZone,StageZone.SuperZone);
@@ -54,11 +60,12 @@ namespace WheelOfFortune.Stage {
             List<RewardData> rewardDatas = GetRewardList(stageZone);
             _currentStage.RunStage(rewardDatas, _currentStageNo, stageZone);
 
-
+            return true;
         }
         private void UpdateZoneRewardIcon(StageZone currentStageZone,StageZone targetZone)
         {
-                Sprite zoneRewardIcon = null;
+           
+                Sprite zoneRewardIcon;
             if(_gameSettings.TryGetZoneRewardData(_currentStageNo, targetZone, out int zoneTargetStageNo, out RewardData specialReward))
             {
                     zoneRewardIcon = _gameSettings.GetRewardSprite(specialReward.SpriteName);
@@ -70,11 +77,9 @@ namespace WheelOfFortune.Stage {
             UIManager.Instance.InitializeSpecialRewardIcon(targetZone, zoneTargetStageNo, zoneRewardIcon);
   
 
-            if(currentStageZone == StageZone.SuperZone)
-            {
-                UIManager.Instance.ActivateSpecialRewardPopUp();
-            }
         }
+        protected abstract void SetStageCount(); 
+
         protected abstract void SetCurrentStage();
         protected abstract List<RewardData> GetRewardList(StageZone stageZone);
     }

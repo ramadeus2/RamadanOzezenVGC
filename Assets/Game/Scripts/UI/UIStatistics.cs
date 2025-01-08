@@ -8,6 +8,7 @@ using WheelOfFortune.Reward;
 using WheelOfFortune.SaveManagement;
 using WheelOfFortune.UserInterface;
 using WheelOfFortune.Utilities;
+using Zenject;
 
 namespace WheelOfFortune {
 
@@ -16,9 +17,11 @@ namespace WheelOfFortune {
         [SerializeField] private Transform _contentHolder;
         [SerializeField] private GameObject _menuPanel;
         private Button _closeButton;
-        private void OnValidate()
+        
+        [Inject]
+        private void Constructor(CloseButton closeButton)
         {
-            _closeButton = GetComponentInChildren<Button>();
+            _closeButton = closeButton.Button; 
         }
         private void OnEnable()
         {
@@ -50,11 +53,11 @@ namespace WheelOfFortune {
             {
                 Destroy(_contentHolder.GetChild(i).gameObject);
             }
-            List<DataSaveInfo> rewardSaveDatas = SaveSystem.LoadDatas (Consts.SAVE_INFO_NAME_REWARD);
+            List<DataSaveInfo> rewardSaveDatas = SaveSystem.LoadDatas (Consts.SAVE_INFO_NAME_REWARD, RewardType.Normal);
             GameSettings gameSettings = GameManager.Instance.GameSettings; 
             for(int i = 0; i < rewardSaveDatas.Count; i++)
             {
-                UIRewardContent rewardContent = Instantiate(_rewardContentPrefab, _contentHolder); 
+                UIRewardContent rewardContent = Instantiate(_rewardContentPrefab, _contentHolder);
                 RewardData rewardData = gameSettings.RewardPool.GetRewardData(rewardSaveDatas[i].DataId);
                 Sprite icon = gameSettings.GetRewardSprite(rewardData.SpriteName);
                 RewardUnit rewardUnit = new RewardUnit(rewardData, icon , rewardSaveDatas[i].CurrentAmount);

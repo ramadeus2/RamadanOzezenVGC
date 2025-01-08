@@ -21,6 +21,15 @@ public class SceneInstaller : MonoInstaller
             Container.Bind<ManualStageSystem>().FromComponentInHierarchy().AsSingle();
             Container.Bind<AutomaticStageSystem>().FromComponentInHierarchy().AsSingle();
 
+            Container.Bind<AutomaticStageButton>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<ManualStageButton>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<CloseButton>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<CollectButton>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<ReviveButton>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<GiveUpButton>().FromComponentInHierarchy().AsSingle(); 
+            Container.Bind<SpinButton>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<StatisticsButton>().FromComponentInHierarchy().AsSingle();
+
         }
     }
 }

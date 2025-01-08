@@ -9,7 +9,11 @@ using WheelOfFortune.Utilities;
 namespace WheelOfFortune.Stage {
 
 public class ManualStageSystem : AbstractStageSystem
-{ 
+{
+        protected override void SetStageCount()
+        {
+           _stageCount = _gameSettings.StagePool.StageDatas.Count;
+        }
         protected override void SetCurrentStage()
         { 
             _currentStage = _gameSettings.StagePool.StageDatas[_currentStageNo];  

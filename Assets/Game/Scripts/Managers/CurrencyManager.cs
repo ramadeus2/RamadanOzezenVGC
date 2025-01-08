@@ -22,15 +22,13 @@ namespace WheelOfFortune.CurrencySystem {
             SynchronizeSavedCurrencyDatas();
         }
 
-        private void SynchronizeSavedCurrencyDatas()
+        public void SynchronizeSavedCurrencyDatas()
         {
 
 
-            List<DataSaveInfo> savedCurrencyDataInfos = SaveSystem.LoadDatas (Consts.SAVE_INFO_NAME_CURRENCY);
+            List<DataSaveInfo> savedCurrencyDataInfos = SaveSystem.LoadDatas (Consts.SAVE_INFO_NAME_CURRENCY,RewardType.Currency);
             List<CurrencySaveData> savedCurrencyDatas = new List<CurrencySaveData>();
             CurrencySettings availableSettings = _gameSettings.CurrencySettings;
-
-
 
             for(int a = 0; a < availableSettings.AvailableCurrencies.Count; a++)
             { 
@@ -38,7 +36,7 @@ namespace WheelOfFortune.CurrencySystem {
                 CurrencySaveData newCurrentData = null;
                 for(int b = 0; b < savedCurrencyDataInfos.Count; b++)
                 {
-                    if(availableSettings.AvailableCurrencies[a].CurrencyId == savedCurrencyDataInfos[b].DataId)
+                    if(availableSettings.AvailableCurrencies[a].CurrencyRewardData.RewardId == savedCurrencyDataInfos[b].DataId)
                     {
                         contains = true;
                         newCurrentData = new CurrencySaveData(savedCurrencyDataInfos[b].DataId,savedCurrencyDataInfos[b].CurrentAmount, availableSettings.AvailableCurrencies[a]);
@@ -48,14 +46,14 @@ namespace WheelOfFortune.CurrencySystem {
                 }
                 if(!contains)
                 {
-                    newCurrentData = new CurrencySaveData(availableSettings.AvailableCurrencies[a].CurrencyId,availableSettings.AvailableCurrencies[a]);
-                    SaveSystem.UpdateData(newCurrentData, Consts.SAVE_INFO_NAME_CURRENCY);
+                    newCurrentData = new CurrencySaveData(availableSettings.AvailableCurrencies[a].CurrencyRewardData.RewardId,availableSettings.AvailableCurrencies[a]);
+                    SaveSystem.UpdateData(newCurrentData, Consts.SAVE_INFO_NAME_CURRENCY,RewardType.Currency);
                 } 
                 savedCurrencyDatas.Add(newCurrentData);
 
+            }
                 _playerCurrencyDatas = savedCurrencyDatas;
                 _uiManager.InitializeCurrencyUI(_playerCurrencyDatas);
-            }
 
         }
 
@@ -74,21 +72,21 @@ namespace WheelOfFortune.CurrencySystem {
         private void CurrencySpent(CurrencySaveData currencyData, int amount)
         {
             currencyData.ExtractAmount(amount);
-            SaveSystem.UpdateData(currencyData, Consts.SAVE_INFO_NAME_CURRENCY);
+            SaveSystem.UpdateData(currencyData, Consts.SAVE_INFO_NAME_CURRENCY,RewardType.Currency);
             _uiManager.UpdateCurrencyUI();
         }
         public void CurrencyEarned(string currencyId, int amount)
         {
             CurrencySaveData currencyData = GetCurrencyData(currencyId);
             currencyData.InsertAmount(amount);
-            SaveSystem.UpdateData(currencyData, Consts.SAVE_INFO_NAME_CURRENCY);
+            SaveSystem.UpdateData(currencyData, Consts.SAVE_INFO_NAME_CURRENCY, RewardType.Currency);
             _uiManager.UpdateCurrencyUI();
         }
         public CurrencySaveData GetCurrencyData(string currencyId)
         { 
             for(int i = 0; i < _playerCurrencyDatas.Count; i++)
             {  
-                if(_playerCurrencyDatas[i].Currency.CurrencyId == currencyId)
+                if(_playerCurrencyDatas[i].Currency.CurrencyRewardData.RewardId == currencyId)
                 {
                     return _playerCurrencyDatas[i];
                 }

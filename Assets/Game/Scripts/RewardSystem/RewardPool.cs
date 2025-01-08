@@ -42,7 +42,7 @@ namespace WheelOfFortune.Reward {
             {
                 return rewardData;
             }
-
+            Debug.Log("ff");
             return null;
         }
         public bool   GetRewardData(string id,RewardType rewardType, out RewardData rewardData)

@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: NormalReward_26
   m_EditorClassIdentifier: 
-  _rewardId: 
-  _rewardName: 
+  _rewardId: 928230eb-03b6-4601-9f7a-dcb7cf6473fa
+  _rewardName: NormalReward_26
   _minAmount: 5
   _maxAmount: 15
-  _probability: 100
+  _probability: 27
   _rewardType: 0
-  _spriteName: 
-  _icon: {fileID: 0}
+  _spriteName: UI_icon_chest_small_noligt
   selectedSpriteIndex: 25

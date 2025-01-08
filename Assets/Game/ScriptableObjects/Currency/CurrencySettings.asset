@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _availableCurrencies:
   - {fileID: 11400000, guid: 1bc751d6fbd19af4782ea35a3a36a25e, type: 2}
+  - {fileID: 11400000, guid: d36a2de4a0c2a0949b52162cd85e6bd4, type: 2}

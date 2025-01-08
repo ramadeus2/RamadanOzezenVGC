@@ -10,7 +10,10 @@ namespace WheelOfFortune.Stage {
 
     public class AutomaticStageSystem: AbstractStageSystem {
 
-     
+        protected override void SetStageCount()
+        {
+            _stageCount = _gameSettings.AutomaticStageSystemStageCount;
+        }
         protected override void SetCurrentStage()
         {
             _currentStage = ScriptableObject.CreateInstance<StageData>(); 

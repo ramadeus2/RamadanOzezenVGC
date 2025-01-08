@@ -14,21 +14,25 @@ namespace WheelOfFortune.UserInterface {
         public void InitializeCurrencyUI(List<CurrencySaveData> savedCurrencyDatas)
         {
             _currencyDatas = savedCurrencyDatas;
-            _uiCurrencyItems = new UICurrencyItem[savedCurrencyDatas.Count];
-            for(int i = 0; i < _uiCurrencyItems.Length; i++)
-            {
-                UICurrencyItem uICurrencyItem = Instantiate(_uiCurrencyItemPrefab, transform);
-                _uiCurrencyItems[i] = uICurrencyItem; 
-            }
 
+            if(_uiCurrencyItems == null)
+            {
+                _uiCurrencyItems = new UICurrencyItem[savedCurrencyDatas.Count];
+                for(int i = 0; i < savedCurrencyDatas.Count; i++)
+                {
+                    UICurrencyItem uICurrencyItem = Instantiate(_uiCurrencyItemPrefab, transform);
+                    _uiCurrencyItems[i] = uICurrencyItem;
+                }
+            }
+            
             UpdateCurrencyUI();
         }
-        public void UpdateCurrencyUI( )
+        public void UpdateCurrencyUI()
         {
             for(int i = 0; i < _uiCurrencyItems.Length; i++)
-            { 
+            {
                 _uiCurrencyItems[i].UpdateItem(_currencyDatas[i]);
-           
+
             }
         }
     }

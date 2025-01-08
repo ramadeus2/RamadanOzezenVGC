@@ -9,9 +9,9 @@ using WheelOfFortune.Utilities;
 namespace WheelOfFortune.SaveManagement {
 
     public static class SaveSystem {
-        public static List<DataSaveInfo> LoadDatas (string dataSaveName)
+        public static List<DataSaveInfo> LoadDatas(string dataSaveName, RewardType rewardType)
         {
-            List<DataSaveInfo> allDatas = new List<DataSaveInfo>(); 
+            List<DataSaveInfo> allDatas = new List<DataSaveInfo>();
 
 
             if(PlayerPrefs.HasKey(dataSaveName))
@@ -23,31 +23,35 @@ namespace WheelOfFortune.SaveManagement {
                 for(int i = 0; i < deserializedDatas.Length; i++)
                 {
                     DataSaveInfo data = JsonUtility.FromJson<DataSaveInfo>(deserializedDatas[i]);
-                    allDatas.Add(data);
+                    if(data.RewardType == rewardType)
+                    {
+                        allDatas.Add(data);
+                    }
                 }
 
             }
+           
             return allDatas;
 
         }
 
-        public static void UpdateData(AbstractSaveData data, string dataSaveName)
+        public static void UpdateData(AbstractSaveData data, string dataSaveName,RewardType rewardType)
         {
-            List<DataSaveInfo> allDatas = LoadDatas (dataSaveName);
+            List<DataSaveInfo> allDatas = LoadDatas(dataSaveName, rewardType);
             bool contains = false;
             for(int i = 0; i < allDatas.Count; i++)
             {
 
                 if(allDatas[i].DataId == data.DataId)
                 {
-                    allDatas[i].UpdateAmount(data.CurrentAmount); 
+                    allDatas[i].UpdateAmount(data.CurrentAmount);
                     contains = true;
                     break;
                 }
             }
             if(!contains)
             {
-                DataSaveInfo dataSaveInfo = new DataSaveInfo(data.DataId, data.CurrentAmount);
+                DataSaveInfo dataSaveInfo = new DataSaveInfo(data.DataId, data.CurrentAmount, rewardType);
                 allDatas.Add(dataSaveInfo);
             }
 
@@ -67,17 +71,19 @@ namespace WheelOfFortune.SaveManagement {
     [Serializable]
     public class
         DataSaveInfo {
-        public DataSaveInfo(string dataId, int currentAmount)
+        public DataSaveInfo(string dataId, int currentAmount, RewardType rewardType)
         {
             DataId = dataId;
             CurrentAmount = currentAmount;
+            RewardType = rewardType;
         }
-        public void UpdateAmount(int amount)
+        public void UpdateAmount(int amount )
         {
-            CurrentAmount = amount;
+            CurrentAmount = amount; 
         }
         public string DataId;
         public int CurrentAmount;
+        public RewardType RewardType;
 
     }
 }

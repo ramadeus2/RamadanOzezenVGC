@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: NormalReward_19
   m_EditorClassIdentifier: 
-  _rewardId: 
-  _rewardName: 
+  _rewardId: 6c2f07ca-f60d-46fb-a247-d2bb20f98f17
+  _rewardName: NormalReward_19
   _minAmount: 5
   _maxAmount: 15
-  _probability: 100
+  _probability: 24
   _rewardType: 0
-  _spriteName: 
-  _icon: {fileID: 0}
+  _spriteName: ui_icon_render_t_cons_molotov
   selectedSpriteIndex: 18

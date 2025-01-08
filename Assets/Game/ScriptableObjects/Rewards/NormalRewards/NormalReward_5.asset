@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c07f568e34b2044821ffeda420d596, type: 3}
   m_Name: NormalReward_5
   m_EditorClassIdentifier: 
-  _rewardId: 
-  _rewardName: 
+  _rewardId: 48ad4fa5-e10b-4144-9ab8-7a7ac0ffe034
+  _rewardName: NormalReward_5
   _minAmount: 5
   _maxAmount: 15
-  _probability: 100
+  _probability: 20
   _rewardType: 0
-  _spriteName: 
-  _icon: {fileID: 0}
+  _spriteName: ui_icon_render_cons_healthshot_2_neurostim
   selectedSpriteIndex: 4

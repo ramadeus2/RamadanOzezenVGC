@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   _stageSuperZoneThreshold: 3
-  _stageSafeZoneThreshold: 5
+  _stageSafeZoneThreshold: 2
   _stageRewardUnitAmount: 8
   _stageRewardMultiplierSafeZone: 2
   _stageRewardMultiplierSuperZone: 4
+  _automaticStageSystemStageCount: 10
   _normalRewardAtlas: {fileID: 4343727234628468602, guid: 4311b6ec4ad9d034fa853940a97543e9, type: 2}
   _specialRewardAtlas: {fileID: 4343727234628468602, guid: 0aef12e7eb7aa674891c89d067dc6797, type: 2}
   _currencyAtlas: {fileID: 4343727234628468602, guid: 92877a0f83095824e86cdc4390cb2a0e, type: 2}

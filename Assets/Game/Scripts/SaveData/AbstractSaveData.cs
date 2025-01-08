@@ -1,17 +1,21 @@
 using System;
 using UnityEngine;
+using WheelOfFortune.Utilities;
+
 namespace WheelOfFortune.SaveManagement {
     [Serializable] 
     public abstract class AbstractSaveData 
 {
-        public AbstractSaveData(string dataId )
+        public AbstractSaveData(string dataId,RewardType rewardType )
         {
-            _dataId = dataId; 
+            _dataId = dataId;
+            _rewardType = rewardType;
         }
-        public AbstractSaveData(string dataId,  int amount)
+        public AbstractSaveData(string dataId,  int amount, RewardType rewardType)
         { 
             _dataId = dataId;
             _currentAmount = amount;
+            _rewardType = rewardType;
         }
         public int InsertAmount(int amount)
         {
@@ -28,6 +32,8 @@ namespace WheelOfFortune.SaveManagement {
         public int CurrentAmount => _currentAmount;
         protected string _dataId;
         public string DataId => _dataId;
+        protected RewardType _rewardType;
+        public RewardType RewardType => _rewardType;
 
     }
 }

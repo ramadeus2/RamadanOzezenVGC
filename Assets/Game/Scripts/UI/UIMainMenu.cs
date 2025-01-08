@@ -4,22 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using WheelOfFortune.Stage;
+using Zenject;
 
 namespace WheelOfFortune.UserInterface {
 
     public class UIMainMenu: MonoBehaviour {
         [SerializeField] private GameObject _statisticsPanel;
-        [SerializeField] private Button _automaticStageButton;
-        [SerializeField] private Button _manualStageButton;
-        [SerializeField] private Button _statisticsButton;
+          private Button _automaticStageButton;
+          private Button _manualStageButton;
+          private Button _statisticsButton;
+        [Inject]
+        private void Constructor(AutomaticStageButton automaticStageButton,ManualStageButton manualStageButton, StatisticsButton statisticsButton)
+        { 
+            _automaticStageButton = automaticStageButton.Button;
+            _manualStageButton = manualStageButton.Button;
+            _statisticsButton = statisticsButton.Button;
+        }
         private void OnEnable()
-        {
-            _automaticStageButton.onClick.AddListener(ActivateAutomaticStage);
-            _manualStageButton.onClick.AddListener(ActivateManualStage);
+        { 
+            _automaticStageButton.onClick.AddListener(ActivateAutomaticStage); 
+            _manualStageButton.onClick.AddListener(ActivateManualStage); 
             _statisticsButton.onClick.AddListener(OpenStatistics); 
 
         }
-
 
         private void OnDisable()
         {

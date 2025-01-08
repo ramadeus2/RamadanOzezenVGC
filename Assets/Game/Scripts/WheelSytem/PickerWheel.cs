@@ -7,13 +7,12 @@ using WheelOfFortune.Reward;
 using UnityEngine.U2D;
 using WheelOfFortune.Stage;
 using WheelOfFortune.General;
+using Zenject;
 
 namespace WheelOfFortune.UserInterface {
 
     public class PickerWheel: MonoSingleton<PickerWheel> {
 
-        [SerializeField] private Button _spinButton;
-        [SerializeField] private Button _leaveButton;
         [SerializeField] private WheelPiece _piecePrefab;
         [SerializeField] private Image _wheel;
         [SerializeField] private Image _indicator;
@@ -31,18 +30,27 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private Sprite _indicatorIconSilver;
         [SerializeField] private Sprite _indicatorIconGold;
 
+        [SerializeField] private Button _spinButton;
+        [SerializeField] private Button _collectButton;
         private WheelPiece[] _wheelSegments;
         private GameSettings _gameSettings;
         private bool _isSpinning = false;
         private StageZone _lastStageZone;
+
+        [Inject]
+        private void Constructor(SpinButton spinButton, CollectButton leaveButton)
+        {
+            _spinButton = spinButton.Button;
+            _collectButton = leaveButton.Button;
+        }
 
         private void OnEnable()
         {
 
             _spinButton.onClick.RemoveAllListeners();
             _spinButton.onClick.AddListener(StartSpin);
-            _leaveButton.onClick.RemoveAllListeners();
-            _leaveButton.onClick.AddListener(CollectAndLeave);
+            _collectButton.onClick.RemoveAllListeners();
+            _collectButton.onClick.AddListener(CollectAndLeave);
 
             _gameSettings = GameManager.Instance.GameSettings;
             InitializePieces();
@@ -73,7 +81,7 @@ namespace WheelOfFortune.UserInterface {
             if(!_gameSettings)
             {
                 _gameSettings = GameManager.Instance.GameSettings;
-            } 
+            }
 
             for(int i = 0; i < _wheelSegments.Length; i++)
             {
@@ -83,11 +91,13 @@ namespace WheelOfFortune.UserInterface {
                 if(rewardDatas[i].RewardType == RewardType.Normal)
                 {
                     rewardIcon = _gameSettings.NormalRewardAtlas.GetSprite(rewardDatas[i].SpriteName);
-                } else if(rewardDatas[i].RewardType == RewardType.Bomb)
+                }
+                else if(rewardDatas[i].RewardType == RewardType.Bomb)
                 {
                     rewardIcon = GameManager.Instance.GameSettings.BombIcon;
                     ;
-                } else
+                }
+                else
                 {
                     rewardIcon = _gameSettings.CurrencyAtlas.GetSprite(rewardDatas[i].SpriteName);
 
@@ -105,8 +115,8 @@ namespace WheelOfFortune.UserInterface {
 
         private void UpdateStageZoneVisual(StageZone stageZone)
         {
-            _leaveButton.gameObject.SetActive(stageZone != StageZone.DangerZone);
-            _leaveButton.interactable = true;
+            _collectButton.gameObject.SetActive(stageZone != StageZone.DangerZone);
+            _collectButton.interactable = true;
             if(_lastStageZone == stageZone)
             {
                 return;
@@ -128,13 +138,13 @@ namespace WheelOfFortune.UserInterface {
                     break;
                 default:
                     break;
-            } 
+            }
         }
 
         public void StartSpin()
         {
             if(_isSpinning) return;
-            _leaveButton.interactable = false;
+            _collectButton.interactable = false;
             _isSpinning = true;
 
             float targetAngle = Random.Range(0, 360) + (360 * 5);
@@ -156,29 +166,9 @@ namespace WheelOfFortune.UserInterface {
             float snapAngle = closestSegmentIndex * segmentAngle;
             _wheel.transform.DORotate(new Vector3(0, 0, -snapAngle), 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
             {
-                //WheelPiece bomb = GetBomb();
-                //if(bomb)
-                //{
-                //    CheckThisStage(bomb);
-                //} else
-                //{
-
                 CheckThisStage(_wheelSegments[closestSegmentIndex]);
-                //}
                 _isSpinning = false;
-
             });
-        }
-        private WheelPiece GetBomb()
-        {
-            for(int i = 0; i < _wheelSegments.Length; i++)
-            {
-                if(_wheelSegments[i].RewardUnit.RewardData.RewardType == RewardType.Bomb)
-                {
-                    return _wheelSegments[i];
-                }
-            }
-            return null;
         }
 
         private void CheckThisStage(WheelPiece wheelPiece) =>

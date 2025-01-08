@@ -38,7 +38,7 @@ namespace WheelOfFortune.Stage {
             _currentStageSystem = _automaticStageSystem;
         }
 
-        public void InitializeNextStage() => _currentStageSystem.InitializeNextStage();
+        public bool InitializeNextStage() => _currentStageSystem.InitializeNextStage();
         
     }
 }
