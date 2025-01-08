@@ -41,17 +41,18 @@ namespace WheelOfFortune.Stage {
             _stageZone = stageZone;
             RunStage();
         }
-        public void InitializeStageData( int stageNo, StageZone stageZone,GameSettings gameSettings,RewardData bombData=null)
+        public void InitializeStageData( int stageNo, StageZone stageZone,List<RewardData> rewardDatas )
         { 
             _stageNo = stageNo;
-            _stageZone = stageZone;
-            RewardData[] rewardDataArray = new RewardData[gameSettings.StageRewardAmount];
-            if(stageZone == StageZone.DangerZone)
-            {
-                rewardDataArray[0] =bombData; 
-            }
-            _rewardDatas = rewardDataArray.ToList();
-            
+            _stageZone = stageZone; 
+            _rewardDatas = rewardDatas;
+
+        }
+        public void InitializeRewards( List<RewardData> rewardDatas)
+        { 
+
+            _rewardDatas = rewardDatas;
+
         }
 
     }

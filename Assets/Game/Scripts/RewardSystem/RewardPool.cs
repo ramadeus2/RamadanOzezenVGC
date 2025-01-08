@@ -1,6 +1,8 @@
+ 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WheelOfFortune.General;
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Reward {
@@ -75,6 +77,113 @@ namespace WheelOfFortune.Reward {
             }
 
             return false;
+        }
+        public RewardData GetRewardDataByName(string name)
+        {
+            RewardData rewardData;
+
+            if(GetRewardData(name, RewardType.Normal, out rewardData))
+            {
+                return rewardData;
+            } else if(GetRewardData(name, RewardType.Special, out rewardData))
+            {
+                return rewardData;
+            } else if(GetRewardData(name, RewardType.Currency, out rewardData))
+            {
+                return rewardData;
+            }
+
+            return null;
+        }
+        public bool GetRewardDataByName(string name, RewardType rewardType, out RewardData rewardData)
+        {
+            List<RewardData> rewardDatas = null;
+
+            rewardData = null;
+            switch(rewardType)
+            {
+                case RewardType.Normal:
+                    rewardDatas = _normalRewardDatas;
+                    break;
+                case RewardType.Currency:
+                    rewardDatas = _currencyDatas;
+                    break;
+                case RewardType.Special:
+                    rewardDatas = _specialRewardDatas;
+                    break;
+                case RewardType.Bomb:
+                    rewardData = BombData;
+                    return true; ;
+                default:
+                    break;
+            }
+            for(int i = 0; i < rewardDatas.Count; i++)
+            {
+                if(rewardDatas[i].RewardName == name)
+                {
+                    rewardData = rewardDatas[i];
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public List<RewardData> GetRandomRewards(int stageCount,StageZone stageZone )
+        {
+            List<RewardData> rewardDatas = new List<RewardData>();
+            for(int i = 0; i < NormalRewardDatas.Count; i++)
+            {
+                rewardDatas.Add(NormalRewardDatas[i]);
+            }
+
+            for(int i = 0; i < CurrencyDatas.Count; i++)
+            {
+                rewardDatas.Add(CurrencyDatas[i]);
+            }
+
+            int totalPossibility = 0;
+            foreach(var reward in rewardDatas)
+            {
+                totalPossibility += reward.Probability;
+            }
+
+            List<RewardData> selectedRewards = new List<RewardData>();
+            bool willThereBeBomb = stageZone == StageZone.DangerZone;
+            int manuallyAddedItemCount = 0;
+            if(willThereBeBomb)
+            {
+                selectedRewards.Add(BombData);
+                manuallyAddedItemCount++;
+            }
+
+
+            List<RewardData> availableRewards = new List<RewardData>(rewardDatas);
+
+            for(int i = 0; i < stageCount - manuallyAddedItemCount; i++) // if we added the bomb
+            {
+                if(availableRewards.Count == 0)
+                    break;
+
+                int randomValue = Random.Range(0, totalPossibility);
+                int cumulativePossibility = 0;
+
+                foreach(var reward in availableRewards)
+                {
+                    cumulativePossibility += reward.Probability;
+
+                    if(randomValue < cumulativePossibility)
+                    {
+                        selectedRewards.Add(reward);
+
+                        totalPossibility -= reward.Probability;
+                        availableRewards.Remove(reward);
+
+                        break;
+                    }
+                }
+            }
+            return selectedRewards;
         }
 
         //public void AddOrUpdateReward(RewardData rewardData)

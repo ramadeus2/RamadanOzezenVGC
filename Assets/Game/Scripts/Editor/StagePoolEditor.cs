@@ -1,6 +1,7 @@
  
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using WheelOfFortune.General;
 using WheelOfFortune.Reward;
@@ -9,8 +10,7 @@ using WheelOfFortune.Utilities;
 namespace WheelOfFortune.Stage {
     [CustomEditor(typeof(StagePool))]
     public class StagePoolEditor: Editor {
-        [SerializeField] private DefaultAsset _stageTargetFolder;
-        [SerializeField] private RewardData _bombData;
+        [SerializeField] private DefaultAsset _stageTargetFolder; 
         [SerializeField] private bool _simpleMode;
         [SerializeField] private int _stageCount;
         [SerializeField] GameSettings gameSettings;
@@ -70,8 +70,9 @@ namespace WheelOfFortune.Stage {
             AssetDatabase.SaveAssets();
             _stagePool.StageDatas.Add(newStage);
             int stageNo = _stagePool.StageDatas.Count;
-            StageZone stageZone = _stagePool.GetStageZone(stageNo, gameSettings);
-            newStage.InitializeStageData(stageNo, stageZone,gameSettings    , _bombData);
+            StageZone stageZone = Helpers.GetStageZone(stageNo, gameSettings); 
+            List<RewardData> rewardDatas = gameSettings.RewardPool.GetRandomRewards(gameSettings.StageRewardAmount, Helpers.GetStageZone(stageNo, gameSettings)); 
+            newStage.InitializeStageData(stageNo, stageZone, rewardDatas);
             ArrayUtility.Add(ref _stageFoldouts, true);
 
             EditorUtility.SetDirty(_stagePool);
@@ -189,7 +190,8 @@ namespace WheelOfFortune.Stage {
                     }
                     GUILayout.FlexibleSpace();
 
-                    GUILayout.EndHorizontal();
+                    GUILayout.EndHorizontal(); 
+ 
 
                 }
                 EditorGUILayout.EndVertical();

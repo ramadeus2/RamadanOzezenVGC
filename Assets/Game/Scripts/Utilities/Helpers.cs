@@ -36,6 +36,17 @@ public class Helpers : MonoBehaviour
             }
             return stageZone;
         }
-
+        public static StageZone GetStageZone(int stageNo, GameSettings gameSettings)
+        {
+            StageZone stageZone = StageZone.DangerZone;
+            if(stageNo != 0 && stageNo % gameSettings.StageSuperZoneMultiplier == 0)
+            {
+                stageZone = StageZone.SuperZone;
+            } else if(stageNo != 0 && stageNo % gameSettings.StageSafeZoneMultiplier == 0)
+            {
+                stageZone = StageZone.SafeZone;
+            }
+            return stageZone;
+        }
     }
 }
