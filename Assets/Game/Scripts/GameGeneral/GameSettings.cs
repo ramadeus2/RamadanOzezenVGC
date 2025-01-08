@@ -43,7 +43,8 @@ namespace WheelOfFortune.General {
 
         [SerializeField] private Sprite _bombIcon;
         public Sprite BombIcon => _bombIcon;
-
+        [SerializeField] private Sprite _safeZoneRewardIcon;
+        public Sprite SafeZoneRewardIcon => _safeZoneRewardIcon;
         [SerializeField] private CurrencySettings _currencySettings;
         public CurrencySettings CurrencySettings => _currencySettings;
 
@@ -58,14 +59,30 @@ namespace WheelOfFortune.General {
 
         [SerializeField] private List<RewardData> _availableSpecialRewards;
         public List<RewardData> AvailableSpecialRewards => _availableSpecialRewards;
-        public bool TryGetSpecialRewardData(int _currentStageNo, out RewardData specialReward)
+        public bool TryGetZoneRewardData(int _currentStageNo, StageZone stageZone, out int zoneRewardStageNo, out RewardData specialReward)
         {
-            int specialRewardIndex = Mathf.RoundToInt(_currentStageNo / StageSuperZoneThreshold); 
-            if((float)_currentStageNo % StageSuperZoneThreshold == 1)
-            { 
-                if(AvailableSpecialRewards.Count > specialRewardIndex)
+            int threshold = 0;
+            switch(stageZone)
+            {
+                case StageZone.DangerZone:
+                    break;
+                case StageZone.SafeZone:
+                threshold = StageSafeZoneThreshold;
+                    break;
+                case StageZone.SuperZone:
+                threshold = StageSuperZoneThreshold;
+                    break;
+                default:
+                    break;
+            }
+            
+            int zoneRewardIndex = Mathf.RoundToInt(_currentStageNo / threshold);
+            zoneRewardStageNo = (zoneRewardIndex+1) * threshold; 
+            if(stageZone == StageZone.SuperZone && (float)_currentStageNo % threshold == 1)
+            {
+                if(AvailableSpecialRewards.Count > zoneRewardIndex)
                 {
-                    specialReward = AvailableSpecialRewards[specialRewardIndex];
+                    specialReward = AvailableSpecialRewards[zoneRewardIndex];
                     return true;
                 }
 
@@ -104,7 +121,7 @@ namespace WheelOfFortune.General {
                     atlas = _currencyAtlas;
                     break;
                 case RewardType.Special:
-                    atlas = _specialRewardAtlas; 
+                    atlas = _specialRewardAtlas;
                     break;
                 case RewardType.Bomb:
                     rewardIcon = _bombIcon;
@@ -112,8 +129,8 @@ namespace WheelOfFortune.General {
                 default:
                     break;
             }
-            
-            rewardIcon = atlas.GetSprite(name); 
+
+            rewardIcon = atlas.GetSprite(name);
             return rewardIcon;
         }
 

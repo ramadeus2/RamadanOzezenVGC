@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 2547560151303085901}
   - component: {fileID: 933653697785804978}
   m_Layer: 5
-  m_Name: UICurrencyItem
+  m_Name: UI_CurrencyItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -46,7 +46,8 @@ namespace WheelOfFortune.Stage {
             StageZone stageZone = Helpers.GetStageZone(_currentStageNo);
             SetCurrentStage();
 
-            UpdateSpecialRewardIcon(stageZone);
+            UpdateZoneRewardIcon(stageZone,StageZone.SuperZone);
+            UpdateZoneRewardIcon(stageZone,StageZone.SafeZone);
 
 
 
@@ -55,14 +56,21 @@ namespace WheelOfFortune.Stage {
 
 
         }
-        private void UpdateSpecialRewardIcon(StageZone stageZone)
+        private void UpdateZoneRewardIcon(StageZone currentStageZone,StageZone targetZone)
         {
-            if(_gameSettings.TryGetSpecialRewardData(_currentStageNo, out RewardData specialReward))
-            { 
-                Sprite specialRewardIcon = _gameSettings.GetRewardSprite(specialReward.SpriteName); 
-                UIManager.Instance.InitializeSpecialRewardIcon(specialRewardIcon);
+                Sprite zoneRewardIcon = null;
+            if(_gameSettings.TryGetZoneRewardData(_currentStageNo, targetZone, out int zoneTargetStageNo, out RewardData specialReward))
+            {
+                    zoneRewardIcon = _gameSettings.GetRewardSprite(specialReward.SpriteName);
             }
-            if(stageZone == StageZone.SuperZone)
+            else
+            {
+                zoneRewardIcon = _gameSettings.SafeZoneRewardIcon;
+            }
+            UIManager.Instance.InitializeSpecialRewardIcon(targetZone, zoneTargetStageNo, zoneRewardIcon);
+  
+
+            if(currentStageZone == StageZone.SuperZone)
             {
                 UIManager.Instance.ActivateSpecialRewardPopUp();
             }
