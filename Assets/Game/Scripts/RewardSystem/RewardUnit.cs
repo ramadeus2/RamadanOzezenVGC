@@ -1,6 +1,4 @@
-
-using UnityEngine;
-
+using UnityEngine; 
 namespace WheelOfFortune.Reward {
 
     public class RewardUnit {

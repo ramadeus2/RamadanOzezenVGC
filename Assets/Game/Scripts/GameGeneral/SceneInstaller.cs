@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using WheelOfFortune.Stage;
 using WheelOfFortune.UserInterface;
 using Zenject;
@@ -9,6 +6,7 @@ namespace WheelOfFortune.General {
 
 public class SceneInstaller : MonoInstaller
 {
+        // dependency injection area
         public override void InstallBindings()
         {
             Container.Bind<UIRewardPanel>().FromComponentInHierarchy().AsSingle();
@@ -22,6 +20,7 @@ public class SceneInstaller : MonoInstaller
 
             Container.Bind<ManualStageSystem>().FromComponentInHierarchy().AsSingle();
             Container.Bind<AutomaticStageSystem>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<StageManager>().FromComponentInHierarchy().AsSingle();
 
             Container.Bind<AutomaticStageButton>().FromComponentInHierarchy().AsSingle();
             Container.Bind<ManualStageButton>().FromComponentInHierarchy().AsSingle();

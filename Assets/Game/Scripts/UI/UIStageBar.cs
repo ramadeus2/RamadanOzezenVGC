@@ -1,36 +1,41 @@
-using DG.Tweening;
-using System;
+using DG.Tweening; 
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine; 
+using WheelOfFortune.General;
 using WheelOfFortune.Utilities;
+using Zenject;
 
 namespace WheelOfFortune.UserInterface {
 
     public class UIStageBar: MonoBehaviour {
-        [SerializeField] private RectTransform _imageHolder;
-        [SerializeField] private RectTransform _textHolder;
+        #region FIELDS
+        // images and texts are not being in the same parent to make the right masked visualization.
+        [SerializeField] private RectTransform _imageHolder; // in scroll view content
+        [SerializeField] private RectTransform _textHolder; // in outside to not being masked
         [SerializeField] private UIStageBarContent _contentPrefab;
 
+
+        [Inject] private GameSettings _gameSettings;
         private List<UIStageBarContent> _stageBars;
-        private int _currentStageIndex = 0;
         private Vector2 _targetPosition;
+        private int _currentStageIndex = 0;
+        #endregion
+        #region INITIALIZATION
 
 
-
-        public void InitializeStageVisual(int stageCount)
+        public void InitializeStageBarVisual(int stageCount)
         {
             DestroyOldStageBarDatas();
             _currentStageIndex = 0;
-            _stageBars = new List<UIStageBarContent>(); 
+            _stageBars = new List<UIStageBarContent>();
             for(int i = 0; i < stageCount; i++)
             {
                 UIStageBarContent stageBar = Instantiate(_contentPrefab, _imageHolder);
                 int stageNo = i + 1; // stage no starts from 1
 
-                StageZone stageZone = Helpers.GetStageZone(stageNo);
-                stageBar.InitializaStageBar(stageNo, stageZone, _textHolder);
+                StageZone stageZone = Helpers.GetStageZone(stageNo, _gameSettings);
+                stageBar.InitializaStageBar(stageNo, stageZone, _textHolder); // send the initialized datas to the item
                 _stageBars.Add(stageBar);
             }
             AnimateStageBar();
@@ -43,17 +48,22 @@ namespace WheelOfFortune.UserInterface {
                 for(int i = 0; i < _stageBars.Count; i++)
                 {
                     Destroy(_stageBars[i].gameObject);
+                    Destroy(_textHolder.GetChild(i).gameObject);
+                    Destroy(_imageHolder.GetChild(i).gameObject);
                 }
             }
         }
+        #endregion
+        #region BEHAVIOUR
 
         private void AnimateStageBar()
         {
             ApplyTextVisual();
             if(_currentStageIndex == 0)
             {
-                StartCoroutine(AnimateAfterFrame());
-            } else
+                StartCoroutine(AnimateAfterFrame()); // there is a horizontal layout component bug. it doesnt apply the local position at start and it causes first stage bar item not to center. so at start, we wait for 1 frame, then animate.
+            }
+            else
             {
                 Animate();
             }
@@ -68,7 +78,7 @@ namespace WheelOfFortune.UserInterface {
         }
         private IEnumerator AnimateAfterFrame()
         {
-            yield return null; 
+            yield return null;
             Animate();
         }
         public void SetNextStage()
@@ -81,13 +91,14 @@ namespace WheelOfFortune.UserInterface {
         {
             if(_currentStageIndex > 0)
             {
-                _stageBars[_currentStageIndex - 1].ChangeTextColorForCurrentZone(false);
+                _stageBars[_currentStageIndex - 1].ChangeTextColorForCurrentZone(false); // change back the previous stage's bar item's color
             }
-            if(_currentStageIndex<_stageBars.Count)
+            if(_currentStageIndex < _stageBars.Count)
             {
-            _stageBars[_currentStageIndex].ChangeTextColorForCurrentZone(true);
+                _stageBars[_currentStageIndex].ChangeTextColorForCurrentZone(true);// set the next stage's bar item's color
             }
         }
+        #endregion
 
     }
 }

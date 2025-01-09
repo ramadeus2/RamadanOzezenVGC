@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +32,7 @@ namespace WheelOfFortune.UserInterface {
             _stageCountText.transform.SetParent(textParent);
             _stageCountText.text = stageNo.ToString();
             _stageZone = stageZone;
-            bool isFirstStage = stageNo == 0;
+            bool isFirstStage = stageNo == 1; 
             switch(stageZone)
             {
                 case StageZone.DangerZone:
@@ -67,7 +65,7 @@ namespace WheelOfFortune.UserInterface {
                     break;
                 default:
                     break;
-            }
+            } 
             _stageCountText.color = color;
 
         }

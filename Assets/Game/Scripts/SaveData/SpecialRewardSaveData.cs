@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using WheelOfFortune.SaveManagement;
 using WheelOfFortune.Utilities;
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.SaveManagement {
 
     public class SpecialRewardSaveData: AbstractSaveData {
         public SpecialRewardSaveData(string rewardId, int amount) : base(rewardId, amount, Utilities.RewardType.Special)

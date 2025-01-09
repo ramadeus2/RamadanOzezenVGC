@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace WheelOfFortune {
+namespace WheelOfFortune.UserInterface {
 
     public class ReviveButton: ButtonData {
         

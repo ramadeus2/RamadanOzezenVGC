@@ -12,8 +12,8 @@ namespace WheelOfFortune.Reward {
         [SerializeField] private DefaultAsset _specialRewardTargetFolder;
         [SerializeField] private DefaultAsset _currenciesTargetFolder;
         [SerializeField] private DefaultAsset _bombTargetFolder;
-        [SerializeField] private bool _simpleMode;
-        //[SerializeField] private DefaultAsset _targetFolder;
+        [SerializeField] private bool _simpleMode; 
+
         private RewardPool _rewardPool;
         private bool[] _normalRewardFoldouts;
         private bool[] _currencyRewardFoldouts;
@@ -117,7 +117,9 @@ namespace WheelOfFortune.Reward {
                 }
             }
         }
-
+        /// <summary>
+        /// simply iterates all the requested reward datas and visualizes them
+        /// </summary>
         private void VisualizeRewardList(List<RewardData> rewardDatas, bool[] rewardFoldouts)
         {
             if(rewardDatas == null)
@@ -392,10 +394,7 @@ namespace WheelOfFortune.Reward {
             }
             if(GUILayout.Button(buttonText))
             {
-                for(int i = 0; i < rewardDatas.Count; i++)
-                {
-                    CompletelyRemoveReward(rewardDatas, rewardFoldouts, i);
-                }
+                 
                 for(int i = 0; i < spriteAtlas.spriteCount; i++)
                 {
 
@@ -409,8 +408,7 @@ namespace WheelOfFortune.Reward {
                     }
                     AssetDatabase.CreateAsset(newReward, fullPath);
                     AssetDatabase.SaveAssets();
-
-                    rewardDatas.Add(newReward);
+                     
                     ArrayUtility.Add(ref rewardFoldouts, true);
 
                     EditorUtility.SetDirty(_rewardPool);

@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using WheelOfFortune.CurrencySystem;
+using UnityEngine; 
 using WheelOfFortune.SaveManagement;
 
 namespace WheelOfFortune.UserInterface {

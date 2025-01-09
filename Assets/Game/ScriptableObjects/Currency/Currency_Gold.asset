@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _icon: {fileID: 21300000, guid: 04053f51417f4be47be91d035c672043, type: 3}
   _currencyRewardData: {fileID: 11400000, guid: 77596d8c72cd4c64cab4d77e9fdf0b2d, type: 2}
-  _startAmount: 100
+  _startAmount: 2000

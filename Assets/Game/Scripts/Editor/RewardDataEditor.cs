@@ -1,7 +1,5 @@
-
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.U2D;
+using UnityEngine; 
 
 namespace WheelOfFortune.Reward {
 
@@ -36,7 +34,6 @@ namespace WheelOfFortune.Reward {
             _rewardData = (RewardData)target;
             _rewardData.InitializeId();
             _rewardData.SetRewardName();
-            //InitializeData();
             Sprite spritePreview = SetSprite(_rewardData, false);
 
         }

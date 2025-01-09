@@ -1,13 +1,12 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening; 
 using UnityEngine;
 using UnityEngine.UI;
-using WheelOfFortune.General;
+using WheelOfFortune.General; 
 
 namespace WheelOfFortune.Utilities {
 
-    public class Helpers: MonoBehaviour {
+    public class Helpers {
+        
         public static int[] ShuffleArrayIndexes(int arrayLength)
         {
             int[] indexOrders = new int[arrayLength];
@@ -24,20 +23,7 @@ namespace WheelOfFortune.Utilities {
                 indexOrders[index] = temp;
             }
             return indexOrders;
-        }
-        public static StageZone GetStageZone(int _currentStageNo)
-        {
-            StageZone stageZone = StageZone.DangerZone;
-            if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSuperZoneThreshold == 0)
-            {
-                stageZone = StageZone.SuperZone;
-            }
-            else if(_currentStageNo > 0 && _currentStageNo % GameManager.Instance.GameSettings.StageSafeZoneThreshold == 0)
-            {
-                stageZone = StageZone.SafeZone;
-            }
-            return stageZone;
-        }
+        } 
         public static StageZone GetStageZone(int stageNo, GameSettings gameSettings)
         {
             StageZone stageZone = StageZone.DangerZone;

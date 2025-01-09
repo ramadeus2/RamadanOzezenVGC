@@ -1,5 +1,4 @@
-using System;
-using UnityEngine;
+using System; 
 using WheelOfFortune.CurrencySystem;
 
 namespace WheelOfFortune.SaveManagement {

@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5036524e6509c9341bd0cd838f5feb6e, type: 3}
   m_Name: Stage_59
   m_EditorClassIdentifier: 
-  _rewardDatas: []
-  _stageNo: 0
+  _rewardDatas:
+  - {fileID: 11400000, guid: c916f8bc327298f44884fcaf43b4f396, type: 2}
+  - {fileID: 11400000, guid: 599168de894d0724ea0b6ceaf2fd4358, type: 2}
+  - {fileID: 11400000, guid: a78392a246dee02438b18b3a615757f2, type: 2}
+  - {fileID: 11400000, guid: 5d2bc22c99ac9b14985440280e370a54, type: 2}
+  - {fileID: 11400000, guid: b050f3e08fec372419b92355af666c46, type: 2}
+  - {fileID: 11400000, guid: 0e2534e41202b404ba2b2e691b2c57c8, type: 2}
+  - {fileID: 11400000, guid: 5cd76162c4c57ea48a4887d574ea1be8, type: 2}
+  - {fileID: 11400000, guid: 05d7f0d08b79a874db1f01a2badd54a8, type: 2}
   _stageZone: 0
+  _stageNo: 59

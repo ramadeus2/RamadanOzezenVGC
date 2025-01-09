@@ -1,8 +1,5 @@
- 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using WheelOfFortune.General;
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Reward {
@@ -10,6 +7,9 @@ namespace WheelOfFortune.Reward {
     [CreateAssetMenu(menuName = "WheelOfFortune/Reward/RewardPool")]
 
     public class RewardPool: ScriptableObject {
+
+        #region FIELDS
+
         [SerializeField] private List<RewardData> _normalRewardDatas;
         public List<RewardData> NormalRewardDatas => _normalRewardDatas;
 
@@ -18,9 +18,11 @@ namespace WheelOfFortune.Reward {
 
         [SerializeField] private List<RewardData> _currencyDatas;
         public List<RewardData> CurrencyDatas => _currencyDatas;
-        [SerializeField] private RewardData _bombData;
-        public RewardData BombData => _bombData;
 
+        [SerializeField] private RewardData _bombData; // bomb data is singular so no need to be in a list
+        public RewardData BombData => _bombData;
+        #endregion
+        #region BEHAVIOURS
 
         public void InitializeBomb(RewardData bombData)
         {
@@ -42,7 +44,6 @@ namespace WheelOfFortune.Reward {
             {
                 return rewardData;
             }
-            Debug.Log("ff");
             return null;
         }
         public bool   GetRewardData(string id,RewardType rewardType, out RewardData rewardData)
@@ -128,7 +129,10 @@ namespace WheelOfFortune.Reward {
 
             return false;
         }
-
+        /// <summary>
+        /// its for automatic stage system. it chooses random 8 rewards(it can be set from GameSettings scriptable obj)  regarding their possibilities
+        /// and also includes the bomb if the stagezone is dangerzone
+        /// </summary>
         public List<RewardData> GetRandomRewards(int stageCount,StageZone stageZone )
         {
             List<RewardData> rewardDatas = new List<RewardData>();
@@ -185,33 +189,8 @@ namespace WheelOfFortune.Reward {
             }
             return selectedRewards;
         }
+        #endregion
 
-        //public void AddOrUpdateReward(RewardData rewardData)
-        //{ 
-        //    for(int i = 0; i < _normalRewardDatas.Count; i++)
-        //    {
-        //        if(_normalRewardDatas[i].RewardId == rewardData.RewardId)
-        //        {
-        //            _normalRewardDatas[i] = rewardData;
-        //            return;
-        //        }
-        //    }
-        //    _normalRewardDatas.Add(rewardData);
-
-        //} 
-        //public List<RewardData> GetRewardDatasByRank( )
-        //{
-        //    List<RewardData> rewardDatas = new List<RewardData>();
-
-        //    for(int i = 0; i < _rewardDatas.Count; i++)
-        //    {
-        //        if(_rewardDatas[i].RewardRank == rewardRank)
-        //        {
-        //            rewardDatas.Add(_rewardDatas[i]);
-        //        }
-        //    }
-
-        //    return rewardDatas;
-        //}
+        
     }
 }

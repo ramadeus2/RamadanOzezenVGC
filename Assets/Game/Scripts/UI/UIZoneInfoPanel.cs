@@ -1,23 +1,18 @@
-using DG.Tweening;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening; 
 using UnityEngine;
-using UnityEngine.UI;
-using WheelOfFortune.Reward;
-using WheelOfFortune.UserInterface;
-using WheelOfFortune.Utilities;
-using Zenject;
+using UnityEngine.UI; 
+using WheelOfFortune.Utilities; 
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.UserInterface {
 
     public class UIZoneInfoPanel: MonoBehaviour {
-        [SerializeField] private UIZoneInfoContent _uiZoneInfoContent;
         [SerializeField] private Transform _contentHolder;
         [SerializeField] private RectTransform _specialRewardPopup;
         [SerializeField] private Image _specialRewardPopupImage;
+        [SerializeField] private UIZoneInfoContent _uiZoneInfoContent;
         [SerializeField] private Vector2 _popupStartPos = new Vector2(0, -350);
         [SerializeField] private Vector2 _popupTargetPos = new Vector2(0, 350);
+
         private UIZoneInfoContent _superZoneInfoContent;
         private UIZoneInfoContent _safeZoneInfoContent;
        
@@ -63,7 +58,7 @@ namespace WheelOfFortune {
         {
           
             _specialRewardPopupImage.sprite = _superZoneInfoContent.ZoneIcon.sprite; 
-            Helpers.AnimateUIObjectMove(_specialRewardPopup, _popupStartPos, _popupTargetPos,duration:.3f, isBoumerang: true, Ease.OutBack, delay: 2,  () =>
+            Helpers.AnimateUIObjectMove(_specialRewardPopup, _popupStartPos, _popupTargetPos,duration:.7f, isBoumerang: true, Ease.OutBack, delay: 2,  () =>
             { 
                     _specialRewardPopup.gameObject.SetActive(false); 
             } );

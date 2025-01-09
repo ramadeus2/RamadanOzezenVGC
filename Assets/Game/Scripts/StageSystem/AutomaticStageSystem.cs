@@ -1,9 +1,6 @@
-
 using System.Collections.Generic;
-using UnityEngine;
-using WheelOfFortune.General;
-using WheelOfFortune.Reward;
-using WheelOfFortune.UserInterface;
+using UnityEngine; 
+using WheelOfFortune.Reward; 
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Stage {
@@ -16,17 +13,17 @@ namespace WheelOfFortune.Stage {
         }
         protected override void SetCurrentStage()
         {
-            _currentStage = ScriptableObject.CreateInstance<StageData>(); 
+            _currentStage = ScriptableObject.CreateInstance<StageData>();
         }
         protected override List<RewardData> GetRewardList(StageZone stageZone)
         {
             return _gameSettings.RewardPool.GetRandomRewards(_stageCount, stageZone);
         }
-            protected override void RunStage(List<RewardData> rewardDatas, int stageNo, StageZone stageZone)
+        protected override void RunStage(List<RewardData> rewardDatas, int stageNo, StageZone stageZone)
         {
-            _currentStage.RunStage(rewardDatas, stageNo, stageZone);
+            _currentStage.RunStage(_gameSettings, rewardDatas, stageNo, stageZone);
         }
-         
+
 
     }
 }

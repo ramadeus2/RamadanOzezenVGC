@@ -1,19 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using WheelOfFortune.Utilities;
+using UnityEngine.UI; 
 
-namespace WheelOfFortune {
+namespace WheelOfFortune.UserInterface {
 
 public class UIZoneInfoContent : MonoBehaviour
 {
-        [SerializeField] private TMP_Text _zoneNameText;
-        [SerializeField] private TMP_Text _zoneTargetStageNoText;
         [SerializeField] private Image _zoneBackground;
         [SerializeField] private Image _zoneIcon;
         [SerializeField] public Image ZoneIcon => _zoneIcon;
+        [SerializeField] private TMP_Text _zoneNameText;
+        [SerializeField] private TMP_Text _zoneTargetStageNoText;
         public void InitializeUIZoneInfo(string zoneName,int zoneTargetStageNo,Sprite zoneIcon,Color bgColor)
         {
             _zoneNameText.text = zoneName;

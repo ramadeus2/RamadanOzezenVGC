@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using WheelOfFortune.General;
-using WheelOfFortune.Reward;
-using WheelOfFortune.UserInterface;
+using System.Collections.Generic; 
+using WheelOfFortune.Reward; 
 using WheelOfFortune.Utilities;
 
 namespace WheelOfFortune.Stage {
@@ -27,7 +23,7 @@ public class ManualStageSystem : AbstractStageSystem
 
         protected override void RunStage(List<RewardData> rewardDatas, int stageNo, StageZone stageZone)
         {
-            _currentStage.RunStage();
+            _currentStage.RunStage(_gameSettings);
         }
     }
 }

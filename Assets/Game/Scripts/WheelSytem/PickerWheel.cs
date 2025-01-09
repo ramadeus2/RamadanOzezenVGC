@@ -3,16 +3,15 @@ using UnityEngine.UI;
 using DG.Tweening;
 using WheelOfFortune.Utilities;
 using System.Collections.Generic;
-using WheelOfFortune.Reward;
-using UnityEngine.U2D;
-using WheelOfFortune.Stage;
+using WheelOfFortune.Reward; 
 using WheelOfFortune.General;
 using Zenject;
 
 namespace WheelOfFortune.UserInterface {
 
     public class PickerWheel: MonoSingleton<PickerWheel> {
-
+        #region FIELDS
+        [Header("References")] 
         [SerializeField] private WheelPiece _piecePrefab;
         [SerializeField] private Image _wheel;
         [SerializeField] private Image _indicator;
@@ -30,41 +29,47 @@ namespace WheelOfFortune.UserInterface {
         [SerializeField] private Sprite _indicatorIconSilver;
         [SerializeField] private Sprite _indicatorIconGold;
 
-        [SerializeField] private Button _spinButton;
-        [SerializeField] private Button _collectButton;
+
+
+        [Inject] private GameSettings _gameSettings;
         private WheelPiece[] _wheelSegments;
         private UIManager _uIManager;
-        private GameSettings _gameSettings;
-        private bool _isSpinning = false;
+        private Button _spinButton;
+        private Button _collectButton;
         private StageZone _lastStageZone;
+        private bool _isSpinning = false;
+        #endregion
+        #region INITIALIZATION
 
         [Inject]
-        private void Constructor(SpinButton spinButton, CollectButton leaveButton,UIManager uIManager)
+        private void Constructor(SpinButton spinButton, CollectButton leaveButton, UIManager uIManager)
         {
             _spinButton = spinButton.Button;
             _collectButton = leaveButton.Button;
-            _uIManager =  uIManager;
+            _uIManager = uIManager;
         }
 
         private void OnEnable()
-        {
-
+        { 
             _spinButton.onClick.RemoveAllListeners();
             _spinButton.onClick.AddListener(StartSpin);
             _collectButton.onClick.RemoveAllListeners();
             _collectButton.onClick.AddListener(CollectAndLeave);
 
-            _gameSettings = GameManager.Instance.GameSettings;
             InitializePieces();
         }
+        #endregion
 
 
-
+        #region BEHAVIOURS
+        /// <summary>
+        /// possible reward count is currently set to 8. but just in case, it takes the initialized count and calculates the angles. yet it need new sprite for the wheel if initialized count changes
+        /// </summary>
         private void InitializePieces()
         {
             if(_wheelSegments == null)
             {
-                int length = GameManager.Instance.GameSettings.StageRewardUnitAmount;
+                int length = _gameSettings.StageRewardUnitAmount;
                 _wheelSegments = new WheelPiece[length];
             }
             float angleOfEachPiece = 360f / _wheelSegments.Length;
@@ -76,17 +81,16 @@ namespace WheelOfFortune.UserInterface {
             }
 
         }
-
+        /// <summary>
+        /// if its a danger zone, it adds 1 bomb then fills the rest. if it's not, it fills all with good rewarsd
+        /// </summary> 
         public void UpdatePieces(List<RewardData> rewardDatas, StageZone stageZone, int rewardAmountMultiplier)
         {
             UpdateStageZoneVisual(stageZone);
-            if(!_gameSettings)
-            {
-                _gameSettings = GameManager.Instance.GameSettings;
-            }
+
 
             for(int i = 0; i < _wheelSegments.Length; i++)
-            { 
+            {
                 int rewardAmount = rewardDatas[i].GetRandomAmount() * rewardAmountMultiplier;
                 Sprite rewardIcon;
 
@@ -96,7 +100,7 @@ namespace WheelOfFortune.UserInterface {
                 }
                 else if(rewardDatas[i].RewardType == RewardType.Bomb)
                 {
-                    rewardIcon = GameManager.Instance.GameSettings.BombIcon;
+                    rewardIcon = _gameSettings.BombIcon;
                     ;
                 }
                 else
@@ -114,7 +118,9 @@ namespace WheelOfFortune.UserInterface {
 
 
         }
-
+        /// <summary>
+        /// for the changing wheel,indicator images when stage zone changes
+        /// </summary> 
         private void UpdateStageZoneVisual(StageZone stageZone)
         {
             _collectButton.gameObject.SetActive(stageZone != StageZone.DangerZone);
@@ -148,7 +154,7 @@ namespace WheelOfFortune.UserInterface {
             if(_isSpinning) return;
             _collectButton.interactable = false;
             _isSpinning = true;
-
+                                         // at least spin 5 times
             float targetAngle = Random.Range(0, 360) + (360 * 5);
 
             _wheel.transform.DORotate(new Vector3(0, 0, -targetAngle), 3f, RotateMode.FastBeyond360)
@@ -168,21 +174,26 @@ namespace WheelOfFortune.UserInterface {
             float snapAngle = closestSegmentIndex * segmentAngle;
             _wheel.transform.DORotate(new Vector3(0, 0, -snapAngle), 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
             {
-                 
-                    CheckThisStage(_wheelSegments[closestSegmentIndex]);
-                 
-                _isSpinning = false;
+                // sends the taken reward to the manager so it can initialize the reward-bomb situation.
+                WheelPiece takenReward = _wheelSegments[closestSegmentIndex];
+                    CheckTheRewardOfThisStage(takenReward); 
+ 
             });
         }
 
-       
+        
 
-        private void CheckThisStage(WheelPiece wheelPiece) =>
+        public void ActivateSpin()
+        {
+            _isSpinning = false;
 
-           _uIManager.CheckTheStage(wheelPiece.RewardUnit, _lastStageZone);
+        }
+        private void CheckTheRewardOfThisStage(WheelPiece wheelPiece) =>
+
+           _uIManager.CheckTheRewardOfThisStage(wheelPiece.RewardUnit);
         private void CollectAndLeave() => _uIManager.CollectAndLeave();
 
-
+        #endregion
 
     }
 }
